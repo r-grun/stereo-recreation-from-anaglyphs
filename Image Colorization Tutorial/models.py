@@ -1,6 +1,9 @@
 import torch
 from torch import nn, optim
 from loss import GANLoss
+from fastai.vision.learner import create_body
+from torchvision.models import resnet18
+from fastai.vision.models.unet import DynamicUnet
 
 
 class UnetBlock(nn.Module):
@@ -172,3 +175,11 @@ class MainModel(nn.Module):
         self.opt_G.zero_grad()
         self.backward_G()
         self.opt_G.step()
+
+
+# U-Net with ResNet18 backend
+def build_res_unet(n_input=1, n_output=2, size=256):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    body = create_body(resnet18(), pretrained=True, n_in=n_input, cut=-2)
+    net_G = DynamicUnet(body, n_output, (size, size)).to(device)
+    return net_G
