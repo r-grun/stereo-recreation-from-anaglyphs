@@ -2,3 +2,5 @@ pillow
 scikit-image
 matplotlib
 tqdm
+ipykernel
+ipywidgets

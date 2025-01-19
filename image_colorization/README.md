@@ -5,7 +5,8 @@
 `conda install -c fastai fastai`
 - Install requirements.txt <br>
 `conda install --yes --file requirements.txt`
-
+- Add python kernel to notebook <br>
+`python -m ipykernel install --name=anaconda-gan`
 
 
 # Image Colorization with U-Net and GAN Tutorial
