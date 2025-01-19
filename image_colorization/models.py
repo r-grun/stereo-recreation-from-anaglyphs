@@ -138,8 +138,8 @@ class MainModel(nn.Module):
             p.requires_grad = requires_grad
 
     def setup_input(self, data):
-        self.L = data['L'].to(self.device)
-        self.ab = data['ab'].to(self.device)
+        self.L = data['L_a'].to(self.device)
+        self.ab = data['ab_a'].to(self.device)
 
     def forward(self):
         self.fake_color = self.net_G(self.L)

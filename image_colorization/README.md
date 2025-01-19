@@ -1,8 +1,8 @@
 # Installation
 - Install torch, torchaudio, torchvision, cuda support https://pytorch.org/get-started/locally/ <br>
-`conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia`
+`conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia --yes`
 - Install fastai https://docs.fast.ai/ <br>
-`conda install -c fastai fastai`
+`conda install -c fastai fastai --yes`
 - Install requirements.txt <br>
 `conda install --yes --file requirements.txt`
 - Add python kernel to notebook <br>
