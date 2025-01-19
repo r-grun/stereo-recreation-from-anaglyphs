@@ -1,3 +1,13 @@
+# Installation
+- Install torch, torchaudio, torchvision, cuda support https://pytorch.org/get-started/locally/ <br>
+`conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia`
+- Install fastai https://docs.fast.ai/ <br>
+`conda install -c fastai fastai`
+- Install requirements.txt <br>
+`conda install --yes --file requirements.txt`
+
+
+
 # Image Colorization with U-Net and GAN Tutorial
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/moein-shariatnia/Deep-Learning/blob/main/Image%20Colorization%20Tutorial/Image%20Colorization%20with%20U-Net%20and%20GAN%20Tutorial.ipynb)
