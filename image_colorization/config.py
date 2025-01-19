@@ -4,8 +4,8 @@ TRAIN_ANAGLYPH_FILE = "../../test_data/train_anaglyphs.txt" # path to the file c
 TRAIN_REVERSED_FILE = "../../test_data/train_reversed.txt" # path to the file containing the paths to the reversed anaglyph images
 
 # paths for validation
-VALIDATION_ANAGLYPH_FILE = "../../test_data/val_anaglyphs.txt" # path to the file containing the paths to the anaglyph images
-VALIDATION_REVERSED_FILE = "../../test_data/val_reversed.txt" # path to the file containing the paths to the reversed anaglyph images
+VALIDATION_ANAGLYPH_FILE = "../../test_data/validation_anaglyphs.txt" # path to the file containing the paths to the anaglyph images
+VALIDATION_REVERSED_FILE = "../../test_data/validation_reversed.txt" # path to the file containing the paths to the reversed anaglyph images
 
 # paths for testing
 TEST_ANAGLYPH_FILE = "../../test_data/test_anaglyphs.txt" # path to the file containing the paths to the anaglyph images

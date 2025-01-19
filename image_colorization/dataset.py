@@ -46,7 +46,7 @@ class ColorizationDataset(Dataset):
         return {'L_a': L_a, 'ab_a': ab_a, 'L_r': L_r, 'ab_r': ab_r}
 
     def __len__(self):
-        return len(self.paths)
+        return len(self.path_anaglyph)
 
 
 def make_dataloaders(batch_size=16, n_workers=4, pin_memory=True, **kwargs):  # A handy function to make our dataloaders
