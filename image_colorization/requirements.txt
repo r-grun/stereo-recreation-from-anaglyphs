@@ -1,3 +1,4 @@
 pillow
 scikit-image
 matplotlib
+tqdm
