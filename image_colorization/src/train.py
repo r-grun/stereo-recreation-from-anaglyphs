@@ -1,6 +1,4 @@
 import torch
-from fastcore.xtras import image_size
-from matplotlib import pyplot as plt
 from torch.optim import Adam
 from torchvision.utils import save_image
 import config as c
@@ -10,6 +8,7 @@ from image_colorization.src.dataloader_anaglyph import make_dataloaders
 from image_colorization.src.discriminator import Discriminator
 from image_colorization.src.generator import Generator
 import datetime
+import csv
 
 # Initialize hyperparameters
 num_epochs = c.EPOCHS
@@ -64,73 +63,86 @@ def train_gan(generator, discriminator, dataloader, num_epochs, device, test_run
     optimizer_G = Adam(generator.parameters(), lr=c.ADAM_LR, betas=(c.ADAM_BETA1, 0.999))
     optimizer_D = Adam(discriminator.parameters(), lr=c.ADAM_LR, betas=(c.ADAM_BETA1, 0.999))
 
-    # Training loop
-    for epoch in range(num_epochs):
-        g_loss_epoch = 0.0  # Accumulate generator loss for the epoch
-        d_loss_epoch = 0.0  # Accumulate discriminator loss for the epoch
+    # Open CSV file for writing
+    training_timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    csv_file_path = os.path.join(c.RESULTS_PATH if not test_run else c.TEST_RESULTS_PATH, f"training_log_{training_timestamp}.csv")
 
-        for i, batch in enumerate(tqdm(dataloader, desc=f"Epoch {epoch+1}/{num_epochs}")):
-            # Extract images from batch and preprocess
-            img_anaglyph = batch['a'].to(device)  # Preprocess anaglyph image
-            img_left =batch['l'].to(device)      # Preprocess left stereo image
-            img_right = batch['r'].to(device)     # Preprocess right stereo image
+    with open(csv_file_path, mode='w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(['Epoch', 'Discriminator Loss', 'Generator Loss'])
 
-            # ======== Train Discriminator ========
-            optimizer_D.zero_grad()
+        # Training loop
+        for epoch in range(num_epochs):
+            g_loss_epoch = 0.0  # Accumulate generator loss for the epoch
+            d_loss_epoch = 0.0  # Accumulate discriminator loss for the epoch
 
-            # Train with real stereo images
-            output_real = discriminator(img_left, img_right).view(-1)
-            label_real = torch.full_like(output_real, real_label, device=device)
-            loss_real = adversarial_loss(output_real, label_real)
+            for i, batch in enumerate(tqdm(dataloader, desc=f"Epoch {epoch+1}/{num_epochs}")):
+                # Extract images from batch and preprocess
+                img_anaglyph = batch['a'].to(device)  # Preprocess anaglyph image
+                img_left =batch['l'].to(device)      # Preprocess left stereo image
+                img_right = batch['r'].to(device)     # Preprocess right stereo image
 
-            # Train with fake stereo images
-            fake_left, fake_right = generator(img_anaglyph)
-            output_fake = discriminator(fake_left.detach(), fake_right.detach()).view(-1)
-            label_fake = torch.full_like(output_fake, fake_label, device=device)
-            loss_fake = adversarial_loss(output_fake, label_fake)
+                # ======== Train Discriminator ========
+                optimizer_D.zero_grad()
 
-            # Combine losses
-            loss_D = loss_real + loss_fake
-            loss_D.backward()
-            optimizer_D.step()
+                # Train with real stereo images
+                output_real = discriminator(img_left, img_right).view(-1)
+                label_real = torch.full_like(output_real, real_label, device=device)
+                loss_real = adversarial_loss(output_real, label_real)
 
-            # ======== Train Generator ========
-            optimizer_G.zero_grad()
+                # Train with fake stereo images
+                fake_left, fake_right = generator(img_anaglyph)
+                output_fake = discriminator(fake_left.detach(), fake_right.detach()).view(-1)
+                label_fake = torch.full_like(output_fake, fake_label, device=device)
+                loss_fake = adversarial_loss(output_fake, label_fake)
 
-            # Generator tries to fool the discriminator
-            output_fake = discriminator(fake_left, fake_right).view(-1)
-            label_fake_for_gen = torch.full_like(output_fake, real_label, device=device)  # Trick discriminator
-            loss_G_adv = adversarial_loss(output_fake, label_fake_for_gen)
+                # Combine losses
+                loss_D = loss_real + loss_fake
+                loss_D.backward()
+                optimizer_D.step()
 
-            # Compute reconstruction loss (L1 loss between generated and real left/right images)
-            loss_G_recon = reconstruction_loss(fake_left, img_left) + reconstruction_loss(fake_right, img_right)
+                # ======== Train Generator ========
+                optimizer_G.zero_grad()
 
-            # Total generator loss = adversarial loss + reconstruction loss
-            loss_G = loss_G_adv + loss_G_recon
+                # Generator tries to fool the discriminator
+                output_fake = discriminator(fake_left, fake_right).view(-1)
+                label_fake_for_gen = torch.full_like(output_fake, real_label, device=device)  # Trick discriminator
+                loss_G_adv = adversarial_loss(output_fake, label_fake_for_gen)
 
-            loss_G.backward()
-            optimizer_G.step()
+                # Compute reconstruction loss (L1 loss between generated and real left/right images)
+                loss_G_recon = reconstruction_loss(fake_left, img_left) + reconstruction_loss(fake_right, img_right)
 
-            # Update epoch loss
-            d_loss_epoch += loss_D.item()
-            g_loss_epoch += loss_G.item()
+                # Total generator loss = adversarial loss + reconstruction loss
+                loss_G = loss_G_adv + loss_G_recon
 
-        # Log epoch losses
-        print(f"Epoch [{epoch+1}/{num_epochs}] - "
-              f"Discriminator Loss: {d_loss_epoch/len(dataloader):.4f}, "
-              f"Generator Loss: {g_loss_epoch/len(dataloader):.4f}")
+                loss_G.backward()
+                optimizer_G.step()
 
-        # Save model checkpoints
-        if test_run or (epoch + 1) % c.NUM_STORE_EVERY == 0:
-            # Generate timestamp
-            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                # Update epoch loss
+                d_loss_epoch += loss_D.item()
+                g_loss_epoch += loss_G.item()
 
-            torch.save(generator.state_dict(), os.path.join(c.MODEL_PATH if not test_run else c.TEST_MODEL_PATH, f"generator_epoch_{epoch+1}_{timestamp}.pth"))
-            torch.save(discriminator.state_dict(), os.path.join(c.MODEL_PATH if not test_run else c.TEST_MODEL_PATH, f"discriminator_epoch_{epoch+1}_{timestamp}.pth"))
-            print(f"Saved model checkpoints for epoch {epoch+1} at {timestamp}")
+            # Log epoch losses
+            d_loss_epoch_avg = d_loss_epoch / len(dataloader)
+            g_loss_epoch_avg = g_loss_epoch / len(dataloader)
+            print(f"Epoch [{epoch+1}/{num_epochs}] - "
+                  f"Discriminator Loss: {d_loss_epoch_avg:.4f}, "
+                  f"Generator Loss: {g_loss_epoch_avg:.4f}")
 
-            # Validate with a few images
-            validate_model(generator, val_dl, device, c.RESULTS_PATH, epoch)
+            # Write losses to CSV
+            csv_writer.writerow([epoch + 1, d_loss_epoch_avg, g_loss_epoch_avg])
+
+            # Save model checkpoints
+            if test_run or (epoch + 1) % c.NUM_STORE_EVERY == 0:
+                # Generate timestamp
+                timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+                torch.save(generator.state_dict(), os.path.join(c.MODEL_PATH if not test_run else c.TEST_MODEL_PATH, f"generator_epoch_{epoch+1}_{timestamp}.pth"))
+                torch.save(discriminator.state_dict(), os.path.join(c.MODEL_PATH if not test_run else c.TEST_MODEL_PATH, f"discriminator_epoch_{epoch+1}_{timestamp}.pth"))
+                print(f"Saved model checkpoints for epoch {epoch+1} at {timestamp}")
+
+                # Validate with a few images
+                validate_model(generator, val_dl, device, c.RESULTS_PATH, epoch)
 
     print("Training complete. Have fun with the results :)")
 
