@@ -23,12 +23,12 @@ IMAGE_SIZE=256 # size of the image (width = height)
 #########################################################################
 
 # TRAINING PARAMETERS
-EPOCHS = 20 # number of training epochs
+EPOCHS = 101 # number of training epochs
 ADAM_LR = 0.0002# Adam optimizer learning rate
 ADAM_BETA1 = 0.5 # Adam optimizer beta1
 
 # Storage
-NUM_STORE_EVERY = 10  # number of epochs to store the model
+NUM_STORE_EVERY = 20  # number of epochs to store the model
 MODEL_PATH = "./models/"  # path to save temporary models
 TEST_MODEL_PATH = "./models/test/"  # path to save the test trained models
 

@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 class AnaglyphDataset(Dataset):
     def __init__(self, path_anaglyph, path_left, path_right, image_size=256, files_limit=0):
         self.transforms = transforms.Compose([
-            transforms.Resize((image_size, image_size), interpolation=InterpolationMode.BICUBIC),  # Resize images to a fixed size
+            # transforms.Resize((image_size, image_size), interpolation=InterpolationMode.BICUBIC),  # Resize images to a fixed size
             transforms.ToTensor(),         # Convert to tensor
             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])  # Normalize to [-1, 1]
         ])
@@ -28,7 +28,6 @@ class AnaglyphDataset(Dataset):
             self.right_paths = self.right_paths[:files_limit]
 
     def __getitem__(self, idx):
-
         img_anaglyph = Image.open(self.anaglyphs_paths[idx]).convert("RGB")
         img_anaglyph = self.transforms(img_anaglyph)
 
