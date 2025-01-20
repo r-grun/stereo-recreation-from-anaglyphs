@@ -37,7 +37,7 @@ class AnaglyphDataset(Dataset):
         return {'a': img_anaglyph, 'l': img_left, 'r': img_right}
 
     def __len__(self):
-        return len(self.path_anaglyph)
+        return len(self.anaglyphs_paths)
 
 
 def make_dataloaders(batch_size=16, n_workers=4, pin_memory=True, **kwargs):  # A handy function to make our dataloaders

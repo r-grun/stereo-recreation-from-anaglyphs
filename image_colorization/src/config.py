@@ -26,3 +26,13 @@ IMAGE_SIZE=256 # size of the image (width = height)
 EPOCHS = 20 # number of training epochs
 ADAM_LR = 0.0002# Adam optimizer learning rate
 ADAM_BETA1 = 0.5 # Adam optimizer beta1
+
+# Storage paths
+TEMP_MODEL_PATH = "../models/tmp/"  # path to save temporary models
+FINAL_MODEL_PATH = "../models/"  # path to save the trained models
+
+##########################################################################
+
+# Validation
+NUM_VALIDATION_IMG = 3  # number of images to store for validation
+RESULTS_SAVE_PATH = "../results/"  # path to save the results

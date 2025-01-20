@@ -1,8 +1,10 @@
 import torch
 from torch.optim import Adam
+from torchvision.utils import save_image
+
 import config as c
 from tqdm import tqdm
-
+import os
 from image_colorization.src.dataloader_anaglyph import make_dataloaders
 from image_colorization.src.discriminator import Discriminator
 from image_colorization.src.generator import Generator
@@ -26,6 +28,26 @@ discriminator = Discriminator()
 # Dataloader
 dataloader = make_dataloaders(path_anaglyph=c.TRAIN_ANAGLYPH_FILE, path_left=c.TRAIN_LEFT_FILE, path_right=c.TRAIN_RIGHT_FILE)
 
+def validate_model(generator, validation_dl, device, results_save_path, epoch):
+    """
+    Validate the generator with a few images and save the outputs.
+    """
+    generator.eval()  # Set to evaluation mode
+    with torch.no_grad():
+        for i, batch in enumerate(validation_dl):
+            if i >= c.NUM_VALIDATION_IMG:
+                break
+
+            img_anaglyph = batch['a'].to(device)  # Preprocessed anaglyph image
+            fake_left, fake_right = generator(img_anaglyph)
+
+            # Save the results
+            save_image(fake_left, f"{results_save_path}/epoch_{epoch+1}_img_{i+1}_left.png")
+            save_image(fake_right, f"{results_save_path}/epoch_{epoch+1}_img_{i+1}_right.png")
+            print(f"Saved validation results for image {i+1} of epoch {epoch+1}")
+
+    generator.train()  # Return to training mode
+
 def train_gan(generator, discriminator, dataloader, num_epochs, device, lr, beta1):
 
     # Move models to device
@@ -35,6 +57,8 @@ def train_gan(generator, discriminator, dataloader, num_epochs, device, lr, beta
     # Optimizers
     optimizer_G = Adam(generator.parameters(), lr=lr, betas=(beta1, 0.999))
     optimizer_D = Adam(discriminator.parameters(), lr=lr, betas=(beta1, 0.999))
+
+    i = 0
 
     # Training loop
     for epoch in range(num_epochs):
@@ -72,7 +96,13 @@ def train_gan(generator, discriminator, dataloader, num_epochs, device, lr, beta
             # Generator tries to fool the discriminator
             output_fake = discriminator(fake_left, fake_right).view(-1)
             label_fake_for_gen = torch.full_like(output_fake, real_label, device=device)  # Trick discriminator
-            loss_G = adversarial_loss(output_fake, label_fake_for_gen)
+            loss_G_adv = adversarial_loss(output_fake, label_fake_for_gen)
+
+            # Compute reconstruction loss (L1 loss between generated and real left/right images)
+            loss_G_recon = reconstruction_loss(fake_left, img_left) + reconstruction_loss(fake_right, img_right)
+
+            # Total generator loss = adversarial loss + reconstruction loss
+            loss_G = loss_G_adv + loss_G_recon
 
             loss_G.backward()
             optimizer_G.step()
@@ -81,10 +111,20 @@ def train_gan(generator, discriminator, dataloader, num_epochs, device, lr, beta
             d_loss_epoch += loss_D.item()
             g_loss_epoch += loss_G.item()
 
+            i += 1
+
         # Log epoch losses
         print(f"Epoch [{epoch+1}/{num_epochs}] - "
               f"Discriminator Loss: {d_loss_epoch/len(dataloader):.4f}, "
               f"Generator Loss: {g_loss_epoch/len(dataloader):.4f}")
+
+        # Save model checkpoints
+        torch.save(generator.state_dict(), os.path.join(c.TEMP_MODEL_PATH, f"generator_epoch_{epoch+1}.pth"))
+        torch.save(discriminator.state_dict(), os.path.join(c.TEMP_MODEL_PATH, f"discriminator_epoch_{epoch+1}.pth"))
+        print(f"Saved model checkpoints for epoch {epoch+1}")
+
+        # Validate with a few images
+        validate_model(generator, val_dl, device, c.RESULTS_SAVE_PATH, epoch)
 
 
 if __name__ == "__main__":
