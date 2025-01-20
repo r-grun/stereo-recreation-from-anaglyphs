@@ -1,4 +1,5 @@
 import torch
+from fastcore.xtras import image_size
 from matplotlib import pyplot as plt
 from torch.optim import Adam
 from torchvision.utils import save_image
@@ -27,8 +28,8 @@ generator = Generator()
 discriminator = Discriminator()
 
 # Dataloader
-train_dl = make_dataloaders(path_anaglyph=c.TRAIN_ANAGLYPH_FILE, path_left=c.TRAIN_LEFT_FILE, path_right=c.TRAIN_RIGHT_FILE)
-val_dl = make_dataloaders(path_anaglyph=c.VALIDATION_ANAGLYPH_FILE, path_left=c.VALIDATION_LEFT_FILE, path_right=c.VALIDATION_RIGHT_FILE)
+train_dl = make_dataloaders(path_anaglyph=c.TRAIN_ANAGLYPH_FILE, path_left=c.TRAIN_LEFT_FILE, path_right=c.TRAIN_RIGHT_FILE, image_size=c.IMAGE_SIZE)
+val_dl = make_dataloaders(path_anaglyph=c.VALIDATION_ANAGLYPH_FILE, path_left=c.VALIDATION_LEFT_FILE, path_right=c.VALIDATION_RIGHT_FILE, image_size=c.IMAGE_SIZE)
 
 def validate_model(generator, validation_dl, device, results_save_path, epoch):
     """

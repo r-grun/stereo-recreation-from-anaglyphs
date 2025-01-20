@@ -1,18 +1,17 @@
 from torchvision.transforms import InterpolationMode
-import config as c
 from PIL import Image
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 
 class AnaglyphDataset(Dataset):
-    def __init__(self, path_anaglyph, path_left, path_right, files_limit=0):
+    def __init__(self, path_anaglyph, path_left, path_right, image_size=256, files_limit=0):
         self.transforms = transforms.Compose([
-            transforms.Resize((c.IMAGE_SIZE, c.IMAGE_SIZE), interpolation=InterpolationMode.BICUBIC),  # Resize images to a fixed size
+            transforms.Resize((image_size, image_size), interpolation=InterpolationMode.BICUBIC),  # Resize images to a fixed size
             transforms.ToTensor(),         # Convert to tensor
             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])  # Normalize to [-1, 1]
         ])
 
-        self.size = c.IMAGE_SIZE
+        self.size = image_size
         self.path_anaglyph = path_anaglyph
         self.anaglyphs_paths = open(self.path_anaglyph, 'r').read().splitlines()
         if files_limit > 0:
@@ -47,7 +46,7 @@ class AnaglyphDataset(Dataset):
 
 
 def make_dataloaders(batch_size=16, n_workers=4, pin_memory=True, **kwargs):  # A handy function to make our dataloaders
-    """Create dataloaders for the given dataset. **kwargs should be path_anaglyph, path_left, path_right"""
+    """Create dataloaders for the given dataset. **kwargs should be path_anaglyph, path_left, path_right, image_size=256, files_limit=0"""
     dataset = AnaglyphDataset(**kwargs)
     dataloader = DataLoader(dataset, batch_size=batch_size, num_workers=n_workers,
                             pin_memory=pin_memory)
