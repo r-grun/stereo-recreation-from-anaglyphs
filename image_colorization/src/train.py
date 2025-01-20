@@ -148,4 +148,4 @@ def train_gan(generator, discriminator, dataloader, num_epochs, device, test_run
 
 
 if __name__ == "__main__":
-    train_gan(generator, discriminator, train_dl, num_epochs, device, adam_lr, adam_beta1)
+    train_gan(generator, discriminator, train_dl, num_epochs, device)
