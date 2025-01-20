@@ -1,10 +1,11 @@
 import torch
 from torch.optim import Adam
+import config as c
+from tqdm import tqdm
+
 from image_colorization.src.dataloader_anaglyph import make_dataloaders
 from image_colorization.src.discriminator import Discriminator
 from image_colorization.src.generator import Generator
-import config as c
-from tqdm import tqdm
 
 # Initialize hyperparameters
 num_epochs = c.EPOCHS
@@ -40,7 +41,7 @@ def train_gan(generator, discriminator, dataloader, num_epochs, device, lr, beta
         g_loss_epoch = 0.0  # Accumulate generator loss for the epoch
         d_loss_epoch = 0.0  # Accumulate discriminator loss for the epoch
 
-        for i, batch in enumerate(tqdm(dataloader, desc=f"Epoch {epoch+1}/{num_epochs}")):
+        for i, batch in enumerate(tqdm(dataloader, desc=f"Epoch {epoch}/{num_epochs}")):
             # Extract images from batch and preprocess
             img_anaglyph = batch['a'].to(device)  # Preprocess anaglyph image
             img_left =batch['l'].to(device)      # Preprocess left stereo image

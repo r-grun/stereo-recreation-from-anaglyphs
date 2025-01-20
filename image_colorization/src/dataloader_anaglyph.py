@@ -1,10 +1,6 @@
 from torchvision.transforms import InterpolationMode
-
 import config as c
-import numpy as np
 from PIL import Image
-import torch
-from torch import nn, optim
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 
@@ -18,17 +14,23 @@ class AnaglyphDataset(Dataset):
 
         self.size = c.IMAGE_SIZE
         self.path_anaglyph = path_anaglyph
+        self.anaglyphs_paths = open(self.path_anaglyph, 'r').read().splitlines()
+
         self.path_left = path_left
+        self.left_paths = open(self.path_left, 'r').read().splitlines()
+
         self.path_right = path_right
+        self.right_paths = open(self.path_right, 'r').read().splitlines()
 
     def __getitem__(self, idx):
-        img_anaglyph = Image.open(self.path_anaglyph[idx], mode='r').convert("RGB")
+
+        img_anaglyph = Image.open(self.anaglyphs_paths[idx]).convert("RGB")
         img_anaglyph = self.transforms(img_anaglyph)
 
-        img_left = Image.open(self.path_left[idx]).convert("RGB")
+        img_left = Image.open(self.left_paths[idx]).convert("RGB")
         img_left = self.transforms(img_left)
 
-        img_right = Image.open(self.path_right[idx]).convert("RGB")
+        img_right = Image.open(self.right_paths[idx]).convert("RGB")
         img_right = self.transforms(img_right)
 
 
