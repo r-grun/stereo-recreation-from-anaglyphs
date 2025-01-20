@@ -54,15 +54,15 @@ def validate_model(generator, validation_dl, device, results_save_path, epoch):
 
     generator.train()  # Return to training mode
 
-def train_gan(generator, discriminator, dataloader, num_epochs, device, lr, beta1):
+def train_gan(generator, discriminator, dataloader, num_epochs, device, test_run=False):
 
     # Move models to device
     generator.to(device)
     discriminator.to(device)
 
     # Optimizers
-    optimizer_G = Adam(generator.parameters(), lr=lr, betas=(beta1, 0.999))
-    optimizer_D = Adam(discriminator.parameters(), lr=lr, betas=(beta1, 0.999))
+    optimizer_G = Adam(generator.parameters(), lr=c.ADAM_LR, betas=(c.ADAM_BETA1, 0.999))
+    optimizer_D = Adam(discriminator.parameters(), lr=c.ADAM_LR, betas=(c.ADAM_BETA1, 0.999))
 
     # Training loop
     for epoch in range(num_epochs):
@@ -115,23 +115,22 @@ def train_gan(generator, discriminator, dataloader, num_epochs, device, lr, beta
             d_loss_epoch += loss_D.item()
             g_loss_epoch += loss_G.item()
 
-            i += 1
-
         # Log epoch losses
         print(f"Epoch [{epoch+1}/{num_epochs}] - "
               f"Discriminator Loss: {d_loss_epoch/len(dataloader):.4f}, "
               f"Generator Loss: {g_loss_epoch/len(dataloader):.4f}")
 
-        # Generate timestamp
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-
         # Save model checkpoints
-        torch.save(generator.state_dict(), os.path.join(c.MODEL_PATH, f"generator_epoch_{epoch+1}.pth"))
-        torch.save(discriminator.state_dict(), os.path.join(c.MODEL_PATH, f"discriminator_epoch_{epoch+1}.pth"))
-        print(f"Saved model checkpoints for epoch {epoch+1} at {timestamp}")
+        if test_run or (epoch + 1) % c.NUM_STORE_EVERY == 0:
+            # Generate timestamp
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        # Validate with a few images
-        validate_model(generator, val_dl, device, c.RESULTS_PATH, epoch)
+            torch.save(generator.state_dict(), os.path.join(c.MODEL_PATH if not test_run else c.TEST_MODEL_PATH, f"generator_epoch_{epoch+1}_{timestamp}.pth"))
+            torch.save(discriminator.state_dict(), os.path.join(c.MODEL_PATH if not test_run else c.TEST_MODEL_PATH, f"discriminator_epoch_{epoch+1}_{timestamp}.pth"))
+            print(f"Saved model checkpoints for epoch {epoch+1} at {timestamp}")
+
+            # Validate with a few images
+            validate_model(generator, val_dl, device, c.RESULTS_PATH, epoch)
 
     print("Training complete. Have fun with the results :)")
 
