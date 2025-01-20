@@ -18,7 +18,7 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.load_state_dict(
         torch.load(
-            "final_model_weights.pt",
+            "../final_model_weights.pt",
             map_location=device
         )
     )

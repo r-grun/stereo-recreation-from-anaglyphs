@@ -28,7 +28,7 @@ if __name__ == '__main__':
     model = MainModel(net_G=net_G)
     model.load_state_dict(
         torch.load(
-            "final_model_weights.pt",
+            "../final_model_weights.pt",
             map_location=device
         )
     )

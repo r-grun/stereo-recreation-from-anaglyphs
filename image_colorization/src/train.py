@@ -1,8 +1,8 @@
 import torch
 from torch.optim import Adam
-from image_colorization.dataloader_anaglyph import make_dataloaders
-from image_colorization.discriminator import Discriminator
-from image_colorization.generator import Generator
+from image_colorization.src.dataloader_anaglyph import make_dataloaders
+from image_colorization.src.discriminator import Discriminator
+from image_colorization.src.generator import Generator
 import config as c
 from tqdm import tqdm
 
