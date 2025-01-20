@@ -5,7 +5,7 @@ from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 
 class AnaglyphDataset(Dataset):
-    def __init__(self, path_anaglyph, path_left, path_right):
+    def __init__(self, path_anaglyph, path_left, path_right, files_limit=0):
         self.transforms = transforms.Compose([
             transforms.Resize((c.IMAGE_SIZE, c.IMAGE_SIZE), interpolation=InterpolationMode.BICUBIC),  # Resize images to a fixed size
             transforms.ToTensor(),         # Convert to tensor
@@ -15,12 +15,18 @@ class AnaglyphDataset(Dataset):
         self.size = c.IMAGE_SIZE
         self.path_anaglyph = path_anaglyph
         self.anaglyphs_paths = open(self.path_anaglyph, 'r').read().splitlines()
+        if files_limit > 0:
+            self.anaglyphs_paths = self.anaglyphs_paths[:files_limit]
 
         self.path_left = path_left
         self.left_paths = open(self.path_left, 'r').read().splitlines()
+        if files_limit > 0:
+            self.left_paths = self.left_paths[:files_limit]
 
         self.path_right = path_right
         self.right_paths = open(self.path_right, 'r').read().splitlines()
+        if files_limit > 0:
+            self.right_paths = self.right_paths[:files_limit]
 
     def __getitem__(self, idx):
 

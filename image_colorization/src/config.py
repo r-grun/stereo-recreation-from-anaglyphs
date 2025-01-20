@@ -28,11 +28,12 @@ ADAM_LR = 0.0002# Adam optimizer learning rate
 ADAM_BETA1 = 0.5 # Adam optimizer beta1
 
 # Storage paths
-TEMP_MODEL_PATH = "../models/tmp/"  # path to save temporary models
-FINAL_MODEL_PATH = "../models/"  # path to save the trained models
+MODEL_PATH = "../models/"  # path to save temporary models
+TEST_MODEL_PATH = "../models/test/"  # path to save the test trained models
 
 ##########################################################################
 
 # Validation
 NUM_VALIDATION_IMG = 3  # number of images to store for validation
-RESULTS_SAVE_PATH = "../results/"  # path to save the results
+RESULTS_PATH = "../results/"  # path to save the results
+TEST_RESULTS_PATH = "../results/test/"  # path to save the test results

@@ -1,13 +1,14 @@
 import torch
+from matplotlib import pyplot as plt
 from torch.optim import Adam
 from torchvision.utils import save_image
-
 import config as c
 from tqdm import tqdm
 import os
 from image_colorization.src.dataloader_anaglyph import make_dataloaders
 from image_colorization.src.discriminator import Discriminator
 from image_colorization.src.generator import Generator
+import datetime
 
 # Initialize hyperparameters
 num_epochs = c.EPOCHS
@@ -26,7 +27,8 @@ generator = Generator()
 discriminator = Discriminator()
 
 # Dataloader
-dataloader = make_dataloaders(path_anaglyph=c.TRAIN_ANAGLYPH_FILE, path_left=c.TRAIN_LEFT_FILE, path_right=c.TRAIN_RIGHT_FILE)
+train_dl = make_dataloaders(path_anaglyph=c.TRAIN_ANAGLYPH_FILE, path_left=c.TRAIN_LEFT_FILE, path_right=c.TRAIN_RIGHT_FILE)
+val_dl = make_dataloaders(path_anaglyph=c.VALIDATION_ANAGLYPH_FILE, path_left=c.VALIDATION_LEFT_FILE, path_right=c.VALIDATION_RIGHT_FILE)
 
 def validate_model(generator, validation_dl, device, results_save_path, epoch):
     """
@@ -41,10 +43,13 @@ def validate_model(generator, validation_dl, device, results_save_path, epoch):
             img_anaglyph = batch['a'].to(device)  # Preprocessed anaglyph image
             fake_left, fake_right = generator(img_anaglyph)
 
+            # Generate timestamp
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
             # Save the results
-            save_image(fake_left, f"{results_save_path}/epoch_{epoch+1}_img_{i+1}_left.png")
-            save_image(fake_right, f"{results_save_path}/epoch_{epoch+1}_img_{i+1}_right.png")
-            print(f"Saved validation results for image {i+1} of epoch {epoch+1}")
+            save_image(fake_left, f"{results_save_path}/epoch_{epoch+1}_img_{i+1}_{timestamp}_left.png")
+            save_image(fake_right, f"{results_save_path}/epoch_{epoch+1}_img_{i+1}_{timestamp}_right.png")
+            print(f"Saved validation results for image {i+1} of epoch {epoch+1} at {timestamp}")
 
     generator.train()  # Return to training mode
 
@@ -57,8 +62,6 @@ def train_gan(generator, discriminator, dataloader, num_epochs, device, lr, beta
     # Optimizers
     optimizer_G = Adam(generator.parameters(), lr=lr, betas=(beta1, 0.999))
     optimizer_D = Adam(discriminator.parameters(), lr=lr, betas=(beta1, 0.999))
-
-    i = 0
 
     # Training loop
     for epoch in range(num_epochs):
@@ -118,14 +121,19 @@ def train_gan(generator, discriminator, dataloader, num_epochs, device, lr, beta
               f"Discriminator Loss: {d_loss_epoch/len(dataloader):.4f}, "
               f"Generator Loss: {g_loss_epoch/len(dataloader):.4f}")
 
+        # Generate timestamp
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
         # Save model checkpoints
-        torch.save(generator.state_dict(), os.path.join(c.TEMP_MODEL_PATH, f"generator_epoch_{epoch+1}.pth"))
-        torch.save(discriminator.state_dict(), os.path.join(c.TEMP_MODEL_PATH, f"discriminator_epoch_{epoch+1}.pth"))
-        print(f"Saved model checkpoints for epoch {epoch+1}")
+        torch.save(generator.state_dict(), os.path.join(c.MODEL_PATH, f"generator_epoch_{epoch+1}.pth"))
+        torch.save(discriminator.state_dict(), os.path.join(c.MODEL_PATH, f"discriminator_epoch_{epoch+1}.pth"))
+        print(f"Saved model checkpoints for epoch {epoch+1} at {timestamp}")
 
         # Validate with a few images
-        validate_model(generator, val_dl, device, c.RESULTS_SAVE_PATH, epoch)
+        validate_model(generator, val_dl, device, c.RESULTS_PATH, epoch)
+
+    print("Training complete. Have fun with the results :)")
 
 
 if __name__ == "__main__":
-    train_gan(generator, discriminator, dataloader, num_epochs, device, adam_lr, adam_beta1)
+    train_gan(generator, discriminator, train_dl, num_epochs, device, adam_lr, adam_beta1)
