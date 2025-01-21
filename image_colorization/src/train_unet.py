@@ -8,6 +8,7 @@ from torchvision.utils import save_image
 import datetime
 import csv
 import torch.cuda.amp as amp
+import torchvision.transforms as transforms
 
 # global parameters
 loss_function = nn.CrossEntropyLoss()
@@ -16,11 +17,23 @@ def set_global_config(config_module):
     global c
     c = config_module
 
+def denormalize(tensor, mean, std):
+    """
+    Denormalize a tensor image.
+    """
+    for t, m, s in zip(tensor, mean, std):
+        t.mul_(s).add_(m)
+    return tensor
+
 def display_validation_images(model, validation_dl, device, results_save_path, epoch):
     """
     Display the validation images: anaglyph, original reversed, and generated reversed.
     """
     model.eval()  # Set to evaluation mode
+
+    # Get the transforms from the dataset
+    mean = [0.5, 0.5, 0.5]
+    std = [0.5, 0.5, 0.5]
 
     with torch.no_grad():
         for batch_idx, batch in enumerate(validation_dl):
@@ -40,17 +53,24 @@ def display_validation_images(model, validation_dl, device, results_save_path, e
             save_image(generated_reversed, f"{results_save_path}/unet_epoch_{epoch+1}_img_{batch_idx+1}_{timestamp}_reversed.png")
             print(f"Saved validation results for image {batch_idx+1} of epoch {epoch+1} at {timestamp}")
 
+            # Denormalize and convert to PIL images
+            img_anaglyph = denormalize(img_anaglyph.cpu(), mean, std)
+            img_reversed = denormalize(img_reversed.cpu(), mean, std)
+            generated_reversed = denormalize(generated_reversed.cpu(), mean, std)
+
+            to_pil = transforms.ToPILImage()
+
             # Plot the results
             fig, axes = plt.subplots(1, 3, figsize=(20, 5))
-            axes[0].imshow(img_anaglyph[0].cpu().permute(1, 2, 0) * 0.5 + 0.5)
+            axes[0].imshow(to_pil(img_anaglyph[0]))
             axes[0].set_title("Anaglyph")
             axes[0].axis("off")
 
-            axes[1].imshow(img_reversed[0].cpu().permute(1, 2, 0) * 0.5 + 0.5)
+            axes[1].imshow(to_pil(img_reversed[0]))
             axes[1].set_title("Original Reversed")
             axes[1].axis("off")
 
-            axes[2].imshow(generated_reversed[0].cpu().permute(1, 2, 0) * 0.5 + 0.5)
+            axes[2].imshow(to_pil(generated_reversed[0]))
             axes[2].set_title("Generated Reversed")
             axes[2].axis("off")
 
