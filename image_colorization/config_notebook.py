@@ -18,7 +18,7 @@ TEST_LEFT_FILE = "../../data/test_left.txt"  # path to the file containing the p
 TEST_RIGHT_FILE = "../../data/test_right.txt"  # path to the file containing the paths to the right images (of stereo pairs)
 
 # image size
-IMAGE_SIZE=256 # size of the image (width = height)
+IMAGE_SIZE=512 # size of the image (width = height)
 
 #########################################################################
 
@@ -28,13 +28,13 @@ ADAM_LR = 1e-4 # Adam optimizer learning rate
 ADAM_BETA1 = 0.5 # Adam optimizer beta1
 
 # Storage
-NUM_STORE_EVERY = 1  # number of epochs to store the model
+NUM_STORE_EVERY = 20  # number of epochs to store the model
 MODEL_PATH = "./models/"  # path to save temporary models
 TEST_MODEL_PATH = "./models/test/"  # path to save the test trained models
 
 ##########################################################################
 
 # Validation
-NUM_VALIDATION_IMG = 3  # number of images to store for validation
+NUM_VALIDATION_IMG = 2  # number of images to store for validation
 RESULTS_PATH = "./results/"  # path to save the results
 TEST_RESULTS_PATH = "./results/test/"  # path to save the test results
