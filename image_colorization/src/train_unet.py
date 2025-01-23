@@ -58,7 +58,7 @@ def store_validation_images(model, validation_dl, device, epoch, timestamp):
 
     model.train()
 
-def calculate_validation_loss(model, validation_dl, device, loss_fns):
+def calculate_losses(model, validation_dl, device, loss_fns):
     model.eval()
     val_losses = {loss_name: 0 for loss_name in loss_fns}
 
@@ -119,7 +119,7 @@ def train_unet(model, train_dl, val_dl, device, timestamp):
         avg_train_losses = {loss_name: train_loss / len(train_dl) for loss_name, train_loss in train_losses.items()}
         print(f"Epoch [{epoch+1}/{c.EPOCHS}], " + ", ".join([f"Loss ({loss_name.upper()}): {avg_loss:.4f}" for loss_name, avg_loss in avg_train_losses.items()]))
 
-        avg_val_losses = calculate_validation_loss(model, val_dl, device, loss_fns)
+        avg_val_losses = calculate_losses(model, val_dl, device, loss_fns)
         print(f"Epoch [{epoch+1}/{c.EPOCHS}], " + ", ".join([f"Validation Loss ({loss_name.upper()}): {avg_loss:.4f}" for loss_name, avg_loss in avg_val_losses.items()]))
 
         with open(losses_csv_path, mode='a', newline='') as csv_file:
