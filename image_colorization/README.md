@@ -51,8 +51,11 @@ Arguments:<br>
 - `--image_path` (required): Path to the input anaglyph image.
 - `--output_path` (required): Path to save the reversed anaglyph image.
 - `--stereo_output_path` (required): Path to save the stereo pair image.
-- `--img_height` (optional): Height of the image. Default is 512.
-- `--img_width` (optional): Width of the image. Default is 512.
+- `--img_height` (optional): Height of the image. Default is 256.
+- `--img_width` (optional): Width of the image. Default is 256.
+- `--output_height`(optional): Height of the output reversed anaglyph image and stereo-pair. Default is 256.
+- `--output_width` (optional): Width of the output reversed anaglyph image. The stereo-pair's width is `2 * output_width`. Default is 256.
+
 
 Example:<br>
 ```python image_colorization/src/model.py --model_path path/to/unet_checkpoint.pth --image_path path/to/anaglyph_image.png --output_path path/to/output_image.png --stereo_output_path path/to/stereo_pair.png --img_height 512 --img_width 512```
