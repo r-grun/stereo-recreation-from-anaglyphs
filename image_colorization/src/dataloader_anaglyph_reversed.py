@@ -1,4 +1,3 @@
-from torchvision.transforms import InterpolationMode
 from PIL import Image
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
@@ -8,7 +7,7 @@ class AnaglyphReversedDataset(Dataset):
         self.transforms = transforms.Compose([
             # transforms.Resize((image_size, image_size), interpolation=InterpolationMode.BICUBIC),  # Resize images to a fixed size
             transforms.ToTensor(),         # Convert to tensor
-            transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])  # Normalize to [-1, 1]
+            # transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])  # Normalize to [-1, 1]
         ])
 
         self.path_anaglyph = path_anaglyph
@@ -22,10 +21,10 @@ class AnaglyphReversedDataset(Dataset):
             self.reversed_paths = self.reversed_paths[:files_limit]
 
     def __getitem__(self, idx):
-        img_anaglyph = Image.open(self.anaglyphs_paths[idx]).convert("RGB")
+        img_anaglyph = Image.open(self.anaglyphs_paths[idx]).convert(mode="RGB")
         img_anaglyph = self.transforms(img_anaglyph)
 
-        img_reversed = Image.open(self.reversed_paths[idx]).convert("RGB")
+        img_reversed = Image.open(self.reversed_paths[idx]).convert(mode="RGB")
         img_reversed = self.transforms(img_reversed)
 
         return {'a': img_anaglyph, 'r': img_reversed}

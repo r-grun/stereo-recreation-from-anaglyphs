@@ -23,19 +23,19 @@ IMAGE_SIZE=512 # size of the image (width = height)
 #########################################################################
 
 # TRAINING PARAMETERS
-EPOCHS = 100 # number of training epochs
+EPOCHS = 1 # number of training epochs
 ADAM_LR = 1e-4 # Adam optimizer learning rate
 ADAM_BETA1 = 0.5 # Adam optimizer beta1
 OPTIMIZE_LOSS = 'ssim' # loss to optimize for ['mse', 'mae', 'ssim', 'psnr']
 
 # Storage
-NUM_STORE_EVERY = 20  # number of epochs to store the model
+NUM_STORE_EVERY = 1  # number of epochs to store the model
 MODEL_PATH = "./models/"  # path to save temporary models
 TEST_MODEL_PATH = "./models/test/"  # path to save the test trained models
 
 ##########################################################################
 
 # Validation
-NUM_VALIDATION_IMG = 2  # number of images to store for validation
+NUM_VALIDATION_IMG = 1  # number of images to store for validation
 RESULTS_PATH = "./results/"  # path to save the results
 TEST_RESULTS_PATH = "./results/test/"  # path to save the test results

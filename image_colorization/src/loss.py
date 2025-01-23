@@ -23,3 +23,4 @@ class GANLoss(nn.Module):
         labels = self.get_labels(preds, target_is_real)
         loss = self.loss(preds, labels)
         return loss
+

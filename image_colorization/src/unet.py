@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torchvision.transforms.functional
 
 class UNet(nn.Module):
     def __init__(self, in_channels=3, out_channels=3):
@@ -44,6 +43,7 @@ class UNet(nn.Module):
 
         # Final convolution layer to reduce the number of channels to the number of output channels.
         self.final_conv = nn.Conv2d(64, out_channels, kernel_size=1)
+        self.sigmoid = nn.Sigmoid()  # Add Sigmoid activation
 
     def forward(self, x):
         # Encoder
@@ -67,4 +67,4 @@ class UNet(nn.Module):
         d1 = torch.cat((d1, e1), dim=1)
         d1 = self.decoder1(d1)
 
-        return self.final_conv(d1)
+        return self.sigmoid(self.final_conv(d1))  # Apply Sigmoid activation
