@@ -20,11 +20,11 @@ class ImageLoss(nn.Module):
             raise ValueError(f"Unsupported loss type: {self.loss_type}")
 
     def ssim_loss(self, img1, img2):
-        criterion = SSIM().cuda() if self.device == 'cuda' else SSIM()
+        criterion = SSIM().cuda() if self.device.type == 'cuda' else SSIM()
         return 1 - criterion(img1, img2)
 
     def psnr_loss(self, img1, img2):
-        criterion = PSNR().cuda() if self.device == 'cuda' else PSNR()
+        criterion = PSNR().cuda() if self.device.type == 'cuda' else PSNR()
         psnr = criterion(img1, img2)
         return -psnr
 
