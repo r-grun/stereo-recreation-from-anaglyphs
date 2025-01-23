@@ -30,12 +30,10 @@ OPTIMIZE_LOSS = 'ssim' # loss to optimize for ['mse', 'mae', 'ssim', 'psnr']
 
 # Storage
 NUM_STORE_EVERY = 1  # number of epochs to store the model
-MODEL_PATH = "./models/"  # path to save temporary models
-TEST_MODEL_PATH = "./models/test/"  # path to save the test trained models
+MODEL_PATH = "./models/test"  # path to save temporary models
 
 ##########################################################################
 
 # Validation
 NUM_VALIDATION_IMG = 1  # number of images to store for validation
-RESULTS_PATH = "./results/"  # path to save the results
-TEST_RESULTS_PATH = "./results/test/"  # path to save the test results
+RESULTS_PATH = "./results/test"  # path to save the results
