@@ -35,5 +35,7 @@ MODEL_PATH = "./models/test"  # path to save temporary models
 ##########################################################################
 
 # Validation
-NUM_VALIDATION_IMG = 1  # number of images to store for validation
+NUM_VALIDATION_IMG = 1  # number of vlaidation batches to store all its images
 RESULTS_PATH = "./results/test"  # path to save the results
+STORE_VALIDATION_IMGS = False  # if validation images should be stored
+DISPLAY_VALIDATION_IMGS = True  # if validation images should be displayed

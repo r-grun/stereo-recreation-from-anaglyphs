@@ -1,13 +1,10 @@
 import os
 import torch
-import torch.nn as nn
 import matplotlib.pyplot as plt
 from tqdm.notebook import tqdm
 from torch.optim import Adam
 from torchvision.utils import save_image
-import datetime
 import csv
-import torch.cuda.amp as amp
 import torchvision.transforms as transforms
 from src.image_loss import ImageLoss
 
@@ -20,10 +17,26 @@ def denormalize(tensor, mean, std):
         t.mul_(s).add_(m)
     return tensor
 
-def display_validation_images(model, validation_dl, device, epoch, timestamp):
+def display_validation_images(img_anaglyph, img_reversed, generated_reversed):
+    to_pil = transforms.ToPILImage()
+
+    fig, axes = plt.subplots(1, 3, figsize=(20, 5))
+    axes[0].imshow(to_pil(img_anaglyph[0]))
+    axes[0].set_title("Anaglyph")
+    axes[0].axis("off")
+
+    axes[1].imshow(to_pil(img_reversed[0]))
+    axes[1].set_title("Original Reversed")
+    axes[1].axis("off")
+
+    axes[2].imshow(to_pil(generated_reversed[0]))
+    axes[2].set_title("Generated Reversed")
+    axes[2].axis("off")
+
+    plt.show()
+
+def store_validation_images(model, validation_dl, device, epoch, timestamp):
     model.eval()
-    mean = [0.5, 0.5, 0.5]
-    std = [0.5, 0.5, 0.5]
 
     with torch.no_grad():
         for batch_idx, batch in enumerate(validation_dl):
@@ -33,28 +46,15 @@ def display_validation_images(model, validation_dl, device, epoch, timestamp):
             img_anaglyph = batch['a'].to(device)
             img_reversed = batch['r'].to(device)
             generated_reversed = model(img_anaglyph)
-            save_image(generated_reversed, f"{c.RESULTS_PATH}/unet_epoch_{epoch+1}_img_{batch_idx+1}_{timestamp}_reversed.png")
-            print(f"Saved validation results for image {batch_idx+1} of epoch {epoch+1} at {timestamp}")
 
-            # img_anaglyph = denormalize(img_anaglyph.cpu(), mean, std)
-            # img_reversed = denormalize(img_reversed.cpu(), mean, std)
-            # generated_reversed = denormalize(generated_reversed.cpu(), mean, std)
-            to_pil = transforms.ToPILImage()
+            if c.STORE_VALIDATION_IMGS:
+                for img_idx in range(img_anaglyph.size(0)):
+                    save_image(img_anaglyph[img_idx], f"{c.RESULTS_PATH}/unet_epoch_{epoch+1}_batch_{batch_idx+1}_img_{img_idx+1}_{timestamp}_anaglyph.png")
+                    save_image(img_reversed[img_idx], f"{c.RESULTS_PATH}/unet_epoch_{epoch+1}_batch_{batch_idx+1}_img_{img_idx+1}_{timestamp}_reversed.png")
+                    save_image(generated_reversed[img_idx], f"{c.RESULTS_PATH}/unet_epoch_{epoch+1}_batch_{batch_idx+1}_img_{img_idx+1}_{timestamp}_generated_reversed.png")
+                    print(f"Saved validation results for image {img_idx+1} of batch {batch_idx+1} of epoch {epoch+1} at {timestamp}")
 
-            fig, axes = plt.subplots(1, 3, figsize=(20, 5))
-            axes[0].imshow(to_pil(img_anaglyph[0]))
-            axes[0].set_title("Anaglyph")
-            axes[0].axis("off")
-
-            axes[1].imshow(to_pil(img_reversed[0]))
-            axes[1].set_title("Original Reversed")
-            axes[1].axis("off")
-
-            axes[2].imshow(to_pil(generated_reversed[0]))
-            axes[2].set_title("Generated Reversed")
-            axes[2].axis("off")
-
-            plt.show()
+            if c.DISPLAY_VALIDATION_IMGS: display_validation_images(img_anaglyph, img_reversed, generated_reversed)
 
     model.train()
 
@@ -127,7 +127,7 @@ def train_unet(model, train_dl, val_dl, device, timestamp):
             csv_writer.writerow([epoch + 1] + [avg_train_losses[loss_name] for loss_name in loss_fns] + [avg_val_losses[loss_name] for loss_name in loss_fns])
 
         if ((epoch + 1) % c.NUM_STORE_EVERY == 0) or ((epoch + 1) == c.EPOCHS):
-            # display_validation_images(model=model, validation_dl=val_dl, device=device, epoch=epoch, timestamp=timestamp)
+            if c.STORE_VALIDATION_IMGS or c.DISPLAY_VALIDATION_IMGS: store_validation_images(model=model, validation_dl=val_dl, device=device, epoch=epoch, timestamp=timestamp)
             checkpoint_path = os.path.join(c.MODEL_PATH, f"unet_checkpoint_{timestamp}_epoch{epoch+1}.pth")
             torch.save(model.state_dict(), checkpoint_path)
             print(f"Checkpoint saved at {checkpoint_path}")
