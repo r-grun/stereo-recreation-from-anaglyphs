@@ -127,7 +127,7 @@ def train_unet(model, train_dl, val_dl, device, timestamp):
             csv_writer.writerow([epoch + 1] + [avg_train_losses[loss_name] for loss_name in loss_fns] + [avg_val_losses[loss_name] for loss_name in loss_fns])
 
         if ((epoch + 1) % c.NUM_STORE_EVERY == 0) or ((epoch + 1) == c.EPOCHS):
-            # display_validation_images(model=model, validation_dl=val_dl, device=device, epoch=epoch, timestamp=timestamp)
+            display_validation_images(model=model, validation_dl=val_dl, device=device, epoch=epoch, timestamp=timestamp)
             checkpoint_path = os.path.join(c.MODEL_PATH, f"unet_checkpoint_{timestamp}_epoch{epoch+1}.pth")
             torch.save(model.state_dict(), checkpoint_path)
             print(f"Checkpoint saved at {checkpoint_path}")
