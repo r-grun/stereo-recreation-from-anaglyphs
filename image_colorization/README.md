@@ -39,4 +39,20 @@ Interference is currently only supported for U-Net. GAN interference is not yet 
 - Open `infer_unet.ipynb` for U-Net  inference in Jupyter Notebook
 
 ### In Terminal
-- Run `python .src/infer_unet.py` for U-Net inference in terminal
+
+This command will process the input anaglyph image using the specified U-Net model, save the reversed anaglyph image, and create a stereo pair image with the specified dimensions.
+
+To run the infer_unet.py script, use the following command:<br>
+```python image_colorization/src/model.py --model_path <model_path> --image_path <image_path> --output_path <output_path> --stereo_output_path <stereo_output_path> [--img_height <img_height>] [--img_width <img_width>]```
+
+Arguments:<br>
+
+- `--model_path` (required): Path to the U-Net model.
+- `--image_path` (required): Path to the input anaglyph image.
+- `--output_path` (required): Path to save the reversed anaglyph image.
+- `--stereo_output_path` (required): Path to save the stereo pair image.
+- `--img_height` (optional): Height of the image. Default is 512.
+- `--img_width` (optional): Width of the image. Default is 512.
+
+Example:<br>
+```python image_colorization/src/model.py --model_path path/to/unet_checkpoint.pth --image_path path/to/anaglyph_image.png --output_path path/to/output_image.png --stereo_output_path path/to/stereo_pair.png --img_height 512 --img_width 512```
