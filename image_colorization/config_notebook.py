@@ -35,5 +35,5 @@ MODEL_PATH = "./models/"  # path to save temporary models
 ##########################################################################
 
 # Validation
-NUM_VALIDATION_IMG = 2  # number of images to store for validation
+NUM_VALIDATION_IMG = 3  # number of images to store for validation
 RESULTS_PATH = "./results/"  # path to save the results

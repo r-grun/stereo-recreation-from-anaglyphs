@@ -20,7 +20,7 @@ def denormalize(tensor, mean, std):
         t.mul_(s).add_(m)
     return tensor
 
-def display_validation_images(model, validation_dl, device, epoch):
+def display_validation_images(model, validation_dl, device, epoch, timestamp):
     model.eval()
     mean = [0.5, 0.5, 0.5]
     std = [0.5, 0.5, 0.5]
@@ -33,7 +33,6 @@ def display_validation_images(model, validation_dl, device, epoch):
             img_anaglyph = batch['a'].to(device)
             img_reversed = batch['r'].to(device)
             generated_reversed = model(img_anaglyph)
-            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
             save_image(generated_reversed, f"{c.RESULTS_PATH}/unet_epoch_{epoch+1}_img_{batch_idx+1}_{timestamp}_reversed.png")
             print(f"Saved validation results for image {batch_idx+1} of epoch {epoch+1} at {timestamp}")
 
@@ -128,7 +127,7 @@ def train_unet(model, train_dl, val_dl, device, timestamp):
             csv_writer.writerow([epoch + 1] + [avg_train_losses[loss_name] for loss_name in loss_fns] + [avg_val_losses[loss_name] for loss_name in loss_fns])
 
         if ((epoch + 1) % c.NUM_STORE_EVERY == 0) or ((epoch + 1) == c.EPOCHS):
-            display_validation_images(model=model, validation_dl=val_dl, device=device, epoch=epoch)
+            # display_validation_images(model=model, validation_dl=val_dl, device=device, epoch=epoch, timestamp=timestamp)
             checkpoint_path = os.path.join(c.MODEL_PATH, f"unet_checkpoint_{timestamp}_epoch{epoch+1}.pth")
             torch.save(model.state_dict(), checkpoint_path)
             print(f"Checkpoint saved at {checkpoint_path}")
