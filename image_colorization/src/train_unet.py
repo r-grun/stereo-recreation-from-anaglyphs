@@ -9,8 +9,7 @@ import datetime
 import csv
 import torch.cuda.amp as amp
 import torchvision.transforms as transforms
-
-from image_colorization.src.image_loss import ImageLoss
+from src.image_loss import ImageLoss
 
 def set_global_config(config_module):
     global c
