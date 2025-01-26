@@ -43,7 +43,7 @@ Interference is currently only supported for U-Net. GAN interference is not yet 
 This command will process the input anaglyph image using the specified U-Net model, save the reversed anaglyph image, and create a stereo pair image with the specified dimensions.
 
 To run the infer_unet.py script, use the following command:<br>
-```python image_colorization/src/model.py --model_path <model_path> --image_path <image_path> --output_path <output_path> --stereo_output_path <stereo_output_path> [--img_height <img_height>] [--img_width <img_width>]```
+```python image_colorization/src/infer_model.py --model_path <model_path> --image_path <image_path> --output_path <output_path> --stereo_output_path <stereo_output_path> [--img_height <img_height>] [--img_width <img_width>] [--output_height <output_height>] [--output_width <output_width>]```
 
 Arguments:<br>
 
@@ -51,11 +51,11 @@ Arguments:<br>
 - `--image_path` (required): Path to the input anaglyph image.
 - `--output_path` (required): Path to save the reversed anaglyph image.
 - `--stereo_output_path` (required): Path to save the stereo pair image.
-- `--img_height` (optional): Height of the image. Default is 256.
-- `--img_width` (optional): Width of the image. Default is 256.
+- `--model_input_height` (optional): Height of the input of the model. Input image will be transformed to this value. Default is 256.
+- `--model_input_width` (optional): Width of the input of the model. Input image will be transformed to this value Default is 256.
 - `--output_height`(optional): Height of the output reversed anaglyph image and stereo-pair. Default is 256.
 - `--output_width` (optional): Width of the output reversed anaglyph image. The stereo-pair's width is `2 * output_width`. Default is 256.
 
 
 Example:<br>
-```python image_colorization/src/model.py --model_path path/to/unet_checkpoint.pth --image_path path/to/anaglyph_image.png --output_path path/to/output_image.png --stereo_output_path path/to/stereo_pair.png --img_height 512 --img_width 512```
+```python image_colorization/src/infer_model.py --model_path path/to/unet_checkpoint.pth --image_path path/to/anaglyph_image.png --output_path path/to/output_image.png --stereo_output_path path/to/stereo_pair.png --img_height 256 --img_width 256 --output_height 256 --output_width 256```
