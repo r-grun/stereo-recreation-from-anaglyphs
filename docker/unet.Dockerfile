@@ -4,7 +4,8 @@ FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
 RUN apt-get update
 
 # Install build dependencies
-RUN apt-get install -y nano wget
+RUN apt-get install -y nano wget python3.10 python3-pip python3-dev python3-venv build-essential
+RUN alias python=python3
 
 # Download miniconda
 # RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -26,12 +27,11 @@ COPY image_colorization/requirements_pip.txt init/requirements_pip.txt
 
 # Install pytorch
 # RUN conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia --yes
-RUN pip3 install torch torchvision torchaudio
+RUN pip install torch torchvision torchaudio
 
 # Install fastai
 # RUN conda install -c fastai fastai --yes
-RUN pip install http://download.pytorch.org/whl/cpu/torch-1.0.0-cp36-cp36m-linux_x86_64.whl
-RUN pip install fastai==1.0.61
+# RUN pip install fastai==1.0.61
 
 # Install conda requirements from requirements_conda.txt
 # RUN conda install --yes --file init/requirements_conda.txt
