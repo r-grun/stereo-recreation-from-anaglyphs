@@ -11,7 +11,7 @@ RUN mkdir -p ~/miniconda3
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
 RUN bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
 RUN rm ~/miniconda3/miniconda.sh
-RUN source ~/miniconda3/bin/activate
+RUN . ~/miniconda3/bin/activate
 RUN conda init --all
 
 # Copy requirements files
@@ -39,7 +39,7 @@ COPY image_colorization /app/image_colorization
 
 # Add project pythonpath to bashrc
 RUN echo "export PYTHONPATH=$PYTHONPATH:/app/image_colorization" >> ~/.bashrc
-RUN source ~/.bashrc
+RUN . ~/.bashrc
 
 # Set the working directory to /app
 WORKDIR /app
