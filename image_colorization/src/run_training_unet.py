@@ -35,7 +35,7 @@ def main(test_run=True):
         print("Running test run")
 
         # Make dataloaders for single item
-        single_item_dl = make_dataloaders(path_anaglyph=current_config.TRAIN_ANAGLYPH_FILE, path_reversed=current_config.TRAIN_REVERSED_FILE, files_limit=32)
+        single_item_dl = make_dataloaders(batch_size=current_config.DATALOADER_BATCH_SIZE, n_workers=current_config.DATALOADER_N_WORKERS, path_anaglyph=current_config.TRAIN_ANAGLYPH_FILE, path_reversed=current_config.TRAIN_REVERSED_FILE, files_limit=3)
         print(f"Size of single item dataloader: {len(single_item_dl)}")
 
         # Run training
@@ -44,8 +44,8 @@ def main(test_run=True):
         print("Running full training")
 
         # Make dataloaders
-        training_dl = make_dataloaders(path_anaglyph=current_config.TRAIN_ANAGLYPH_FILE, path_reversed=current_config.TRAIN_REVERSED_FILE)
-        validation_dl = make_dataloaders(path_anaglyph=current_config.VALIDATION_ANAGLYPH_FILE, path_reversed=current_config.VALIDATION_REVERSED_FILE)
+        training_dl = make_dataloaders(batch_size=current_config.DATALOADER_BATCH_SIZE, n_workers=current_config.DATALOADER_N_WORKERS, path_anaglyph=current_config.TRAIN_ANAGLYPH_FILE, path_reversed=current_config.TRAIN_REVERSED_FILE)
+        validation_dl = make_dataloaders(batch_size=current_config.DATALOADER_BATCH_SIZE, n_workers=current_config.DATALOADER_N_WORKERS, path_anaglyph=current_config.VALIDATION_ANAGLYPH_FILE, path_reversed=current_config.VALIDATION_REVERSED_FILE)
         print(f"Size of training dataloader: {len(training_dl)}, Size of validation dataloader: {len(validation_dl)}")
 
         # Run training

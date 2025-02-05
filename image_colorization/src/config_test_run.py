@@ -27,6 +27,8 @@ EPOCHS = 3 # number of training epochs
 ADAM_LR = 1e-4 # Adam optimizer learning rate
 ADAM_BETA1 = 0.5 # Adam optimizer beta1
 OPTIMIZE_LOSS = 'ssim' # loss to optimize for ['mse', 'mae', 'ssim', 'psnr']
+DATALOADER_BATCH_SIZE = 1 # how many samples per batch to load (number of images per batch = #_all_images / DATALOADER_BATCH_SIZE)
+DATALOADER_N_WORKERS = 4 # how many subprocesses to use for data loading
 
 # Storage
 NUM_STORE_EVERY = 1  # number of epochs to store the model
