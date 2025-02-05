@@ -1,5 +1,8 @@
 FROM continuumio/miniconda3:23.5.2-0-alpine
 
+# Install nano editor
+RUN apk add nano
+
 # Copy requirements files
 COPY image_colorization/requirements_conda.txt init/requirements_conda.txt
 COPY image_colorization/requirements_pip.txt init/requirements_pip.txt
