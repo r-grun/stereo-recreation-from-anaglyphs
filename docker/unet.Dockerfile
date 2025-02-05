@@ -1,5 +1,8 @@
 FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04
 
+# Change the shell to bash
+SHELL ["/bin/bash", "-c"]
+
 # Update package lists
 RUN apt-get update
 
@@ -11,7 +14,7 @@ RUN mkdir -p ~/miniconda3
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
 RUN bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
 RUN rm ~/miniconda3/miniconda.sh
-RUN . ~/miniconda3/bin/activate
+RUN source ~/miniconda3/bin/activate
 RUN conda init --all
 
 # Copy requirements files
@@ -39,7 +42,7 @@ COPY image_colorization /app/image_colorization
 
 # Add project pythonpath to bashrc
 RUN echo "export PYTHONPATH=$PYTHONPATH:/app/image_colorization" >> ~/.bashrc
-RUN . ~/.bashrc
+RUN source ~/.bashrc
 
 # Set the working directory to /app
 WORKDIR /app
