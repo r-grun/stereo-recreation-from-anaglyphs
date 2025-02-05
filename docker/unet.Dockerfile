@@ -45,7 +45,7 @@ COPY image_colorization /app/image_colorization
 
 # Add project pythonpath to bashrc
 RUN echo "export PYTHONPATH=$PYTHONPATH:/app/image_colorization" >> ~/.bashrc
-RUN source ~/.bashrc
+RUN . ~/.bashrc
 
 # Set the working directory to /app
 WORKDIR /app
