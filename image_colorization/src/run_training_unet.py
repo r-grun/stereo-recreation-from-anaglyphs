@@ -1,16 +1,14 @@
 import torch
-import config_notebook as c
-import config_notebook_test_run as test_c
 import datetime
 from src.unet import UNet
 from src.dataloader_anaglyph_reversed import make_dataloaders
 from src.train_unet import set_global_config
 from src.train_unet import train_unet
-import config
-import config_test_run
+import src.config as config
+import src.config_test_run as config_test_run
 import argparse
 
-def main(is_test_run=False):
+def main(test_run=True):
     # set device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Running on device: {device}")
@@ -19,7 +17,7 @@ def main(is_test_run=False):
     unet = UNet()
 
     # Choose config based on is_test_run
-    if is_test_run:
+    if test_run:
         current_config = config_test_run
     else:
         current_config = config
@@ -31,11 +29,11 @@ def main(is_test_run=False):
     training_run_timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     print(f"Started training at {training_run_timestamp}")
 
-    if is_test_run:
+    if test_run:
         print("Running test run")
 
         # Make dataloaders for single item
-        single_item_dl = make_dataloaders(path_anaglyph=c.TRAIN_ANAGLYPH_FILE, path_reversed=c.TRAIN_REVERSED_FILE, files_limit=1)
+        single_item_dl = make_dataloaders(path_anaglyph=current_config.TRAIN_ANAGLYPH_FILE, path_reversed=current_config.TRAIN_REVERSED_FILE, files_limit=1)
         print(f"Size of single item dataloader: {len(single_item_dl)}")
 
         # Run training
@@ -53,6 +51,7 @@ def main(is_test_run=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run UNet training")
-    parser.add_argument('--is_test_run', action='store_true', help="Set this flag for a test run")
+    parser.add_argument('--test_run', action='store_true', help="Set this flag for a test run")
     args = parser.parse_args()
-    main(is_test_run=args.is_test_run)
+    main(test_run=args.test_run)
+    print("Training completed.")
