@@ -34,10 +34,10 @@ RUN conda install -c fastai fastai --yes
 RUN conda install --yes --file init/requirements_conda.txt
 
 # Install opencv
-RUN pip install -y opencv-python
+RUN python -m pip install -y opencv-python
 
 # Install pip requirements from `requirements_pip.txt`
-RUN pip install -r init/requirements_pip.txt
+RUN python -m pip install -r init/requirements_pip.txt
 
 # Copy directories /data_creation and /image_colorization to the workdir
 COPY data_creation /app/data_creation

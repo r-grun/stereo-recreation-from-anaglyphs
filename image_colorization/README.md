@@ -24,13 +24,15 @@ Running the scripts is optional, but a dockerfile is provided. Run all steps fro
 
 - Run `docker build -t anaglyph-gan -f docker/unet.Dockerfile .` to build the docker image
 - Run `docker run --rm -it --runtime=nvidia --gpus '"device=0"' -p 9001:8888 -v <data-dir of the hostmachine>:/data/ --name anaglyph-gan-container anaglyph-gan` to run the docker container with exposed port 9001, mapped data directory of the host machine and attached GPU support
+- Start a jupyter notebook in the container to run the scripts in the browser or run the scripts directly in the terminal
 
 ## Training
 ### In Jupyter Notebook
 - Open `recreate_anaglyphs_unet.ipynb` for U-Net training in Jupyter Notebook
 
 ### In Terminal
-- Run `python .src/train_unet.py` for U-Net training in terminal
+- Run `python src/run_trainung_unet.py [--test_run]` for U-Net training in terminal <br>
+The `--test_run` flag is optional and is used to run a test training with a small dataset to verify everything is working as expected.
 
 
 ## Visualizing training metrics
