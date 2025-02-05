@@ -36,7 +36,7 @@ STORE_CONFIG_NAME = "config.txt"  # name of the file to store the configuration 
 ##########################################################################
 
 # Validation
-NUM_VALIDATION_IMG = 3  # number of validation batches to store all its images
+NUM_VALIDATION_IMG = 0  # number of validation batches to store all its images
 RESULTS_PATH = "../results/"  # path to save the results
 STORE_VALIDATION_IMGS = False  # if validation images should be stored
 DISPLAY_VALIDATION_IMGS = False  # if validation images should be displayed

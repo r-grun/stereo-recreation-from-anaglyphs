@@ -7,6 +7,7 @@ from src.train_unet import set_global_config, display_current_config_parameters,
 import src.config as config
 import src.config_test_run as config_test_run
 import argparse
+from tqdm import tqdm
 
 def main(test_run=True):
     # set device
@@ -34,11 +35,11 @@ def main(test_run=True):
         print("Running test run")
 
         # Make dataloaders for single item
-        single_item_dl = make_dataloaders(path_anaglyph=current_config.TRAIN_ANAGLYPH_FILE, path_reversed=current_config.TRAIN_REVERSED_FILE, files_limit=1)
+        single_item_dl = make_dataloaders(path_anaglyph=current_config.TRAIN_ANAGLYPH_FILE, path_reversed=current_config.TRAIN_REVERSED_FILE, files_limit=32)
         print(f"Size of single item dataloader: {len(single_item_dl)}")
 
         # Run training
-        train_unet(model=unet, train_dl=single_item_dl, val_dl=single_item_dl, device=device, timestamp=training_run_timestamp)
+        train_unet(model=unet, train_dl=single_item_dl, val_dl=single_item_dl, device=device, timestamp=training_run_timestamp, tqdm=tqdm)
     else :
         print("Running full training")
 
@@ -48,7 +49,7 @@ def main(test_run=True):
         print(f"Size of training dataloader: {len(training_dl)}, Size of validation dataloader: {len(validation_dl)}")
 
         # Run training
-        train_unet(model=unet, train_dl=training_dl, val_dl=validation_dl, device=device, timestamp=training_run_timestamp)
+        train_unet(model=unet, train_dl=training_dl, val_dl=validation_dl, device=device, timestamp=training_run_timestamp, tqdm=tqdm)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run UNet training")

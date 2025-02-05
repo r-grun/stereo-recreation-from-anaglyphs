@@ -1,7 +1,8 @@
 import os
 import torch
 import matplotlib.pyplot as plt
-from tqdm.notebook import tqdm
+# from tqdm.notebook import tqdm
+# from tqdm import tqdm
 from torch.optim import Adam
 from torchvision.utils import save_image
 import csv
@@ -96,7 +97,7 @@ def calculate_losses(model, validation_dl, device, loss_fns):
     model.train()
     return avg_val_losses
 
-def train_unet(model, train_dl, val_dl, device, timestamp):
+def train_unet(model, train_dl, val_dl, device, timestamp, tqdm):
     """ Train the UNet model."""
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=c.ADAM_LR)
