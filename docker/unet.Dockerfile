@@ -26,7 +26,7 @@ COPY image_colorization/requirements_pip.txt init/requirements_pip.txt
 
 # Install pytorch
 # RUN conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia --yes
-RUN pip install torch torchvision torchaudio
+RUN pip3 install torch torchvision torchaudio
 
 # Install fastai
 # RUN conda install -c fastai fastai --yes
