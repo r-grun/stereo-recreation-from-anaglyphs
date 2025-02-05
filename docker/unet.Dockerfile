@@ -14,7 +14,7 @@ RUN conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c
 RUN conda install -c fastai fastai --yes
 
 # Install conda requirements from requirements_conda.txt
-RUN conda install --yes --file requirements_conda.txt
+RUN conda install --yes --file image_colorization/requirements_conda.txt
 
 # Install pip requirements from `requirements_pip.txt`
-RUN pip install -r requirements_pip.txt
+RUN pip install -r image_colorization/requirements_pip.txt
