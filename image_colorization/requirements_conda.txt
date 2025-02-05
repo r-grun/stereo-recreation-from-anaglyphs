@@ -4,7 +4,6 @@ matplotlib
 tqdm
 ipykernel
 ipywidgets
-opencv
 scikit-learn
 scikit-image
 jupyter

@@ -1,4 +1,4 @@
-FROM continuumio/anaconda3
+FROM continuumio/anaconda3:2024.10-1-amazonlinux
 
 # Copy requirements files
 COPY image_colorization/requirements_conda.txt init/requirements_conda.txt
