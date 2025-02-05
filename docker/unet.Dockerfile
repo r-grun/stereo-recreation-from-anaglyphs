@@ -1,21 +1,24 @@
 FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04
 
-# Change the shell to bash
-SHELL ["/bin/bash", "-c"]
-
 # Update package lists
 RUN apt-get update
 
 # Install build dependencies
 RUN apt-get install -y nano wget
 
+# Download miniconda
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
 # Install miniconda
-RUN mkdir -p ~/miniconda3
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
-RUN bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
-RUN rm ~/miniconda3/miniconda.sh
-RUN source ~/miniconda3/bin/activate
-RUN conda init --all
+ENV PATH="/root/miniconda3/bin:$PATH"
+RUN mkdir /root/.conda && bash Miniconda3-latest-Linux-x86_64.sh -b
+
+# create conda environment
+RUN conda init bash \
+    && . ~/.bashrc \
+    && conda create --name anaglyph-unet python=3.12 \
+    && conda activate anaglyph-unet \
+    && pip install ipython
 
 # Copy requirements files
 COPY image_colorization/requirements_conda.txt init/requirements_conda.txt
