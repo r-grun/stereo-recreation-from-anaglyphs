@@ -7,18 +7,18 @@ RUN apt-get update
 RUN apt-get install -y nano wget
 
 # Download miniconda
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+# RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
 # Install miniconda
-ENV PATH="/root/miniconda3/bin:$PATH"
-RUN mkdir /root/.conda && bash Miniconda3-latest-Linux-x86_64.sh -b
+#ENV PATH="/root/miniconda3/bin:$PATH"
+#RUN mkdir /root/.conda && bash Miniconda3-latest-Linux-x86_64.sh -b
 
 # create conda environment
-RUN conda init bash \
-    && . ~/.bashrc \
-    && conda create --name anaglyph-unet python=3.12 \
-    && conda activate anaglyph-unet \
-    && pip install ipython
+#RUN conda init bash \
+#    && . ~/.bashrc \
+#    && conda create --name anaglyph-unet python=3.12 \
+#    && conda activate anaglyph-unet \
+#    && pip install ipython
 
 # Copy requirements files
 COPY image_colorization/requirements_conda.txt init/requirements_conda.txt
@@ -29,10 +29,13 @@ COPY image_colorization/requirements_pip.txt init/requirements_pip.txt
 RUN pip install torch torchvision torchaudio
 
 # Install fastai
-RUN conda install -c fastai fastai --yes
+# RUN conda install -c fastai fastai --yes
+RUN pip install http://download.pytorch.org/whl/cpu/torch-1.0.0-cp36-cp36m-linux_x86_64.whl
+RUN pip install fastai==1.0.61
 
 # Install conda requirements from requirements_conda.txt
-RUN conda install --yes --file init/requirements_conda.txt
+# RUN conda install --yes --file init/requirements_conda.txt
+RUN pip install -r init/requirements_conda.txt
 
 # Install opencv
 RUN pip install opencv-python
