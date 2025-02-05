@@ -1,7 +1,16 @@
-FROM continuumio/miniconda3:23.5.2-0-alpine
+#FROM continuumio/miniconda3:23.5.2-0-alpine
+FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04
 
 # Install nano editor
 RUN apk add nano
+
+# Install miniconda
+RUN mkdir -p ~/miniconda3
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+RUN bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+RUN rm ~/miniconda3/miniconda.sh
+RUN source ~/miniconda3/bin/activate
+RUN conda init --all
 
 # Install opencv
 RUN apk add py3-opencv
@@ -25,6 +34,10 @@ RUN pip install -r init/requirements_pip.txt
 # Copy directories /data_creation and /image_colorization to the workdir
 COPY data_creation /app/data_creation
 COPY image_colorization /app/image_colorization
+
+# Add project pythonpath to bashrc
+RUN echo "export PYTHONPATH=$PYTHONPATH:/app/image_colorization" >> ~/.bashrc
+RUN source ~/.bashrc
 
 # Set the working directory to /app
 WORKDIR /app
