@@ -131,3 +131,6 @@ def train_unet(model, train_dl, val_dl, device, timestamp):
             checkpoint_path = os.path.join(c.MODEL_PATH, f"unet_checkpoint_{timestamp}_epoch{epoch+1}.pth")
             torch.save(model.state_dict(), checkpoint_path)
             print(f"Checkpoint saved at {checkpoint_path}")
+
+if __name__ == "__main__":
+    print("This script is not meant to be run directly. Please run main.py instead")
