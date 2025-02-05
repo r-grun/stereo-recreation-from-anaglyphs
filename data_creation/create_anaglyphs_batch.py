@@ -4,8 +4,8 @@ from tqdm import tqdm
 import csv
 from sklearn.model_selection import train_test_split
 
-SOURCE_DIR = '/home/jovyan/data/raw'
-TARGET_DIR = '/home/jovyan/data/'
+SOURCE_DIR = '/data/raw'
+TARGET_DIR = '/data/'
 CHUNK_WIDTH = 256
 CHUNK_HEIGHT = 256
 CSV_FILE = os.path.join(TARGET_DIR, 'image_locations.csv')
