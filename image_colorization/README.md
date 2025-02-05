@@ -17,7 +17,13 @@
 
 # Usage
 
-Note: the following commands are displayed for U-Net model as it is the current model under active development. For GAN model, replace `unet` with `gan` in the commands.
+_Note: the following commands are displayed for U-Net model as it is the current model under active development. For GAN model, replace `unet` with `gan` in the commands._
+
+## Run in Docker container [optional]
+Running the scripts is optional, but a dockerfile is provided. Run all steps from the root directory of the project `/stereo-recreation-from-anaglyphs`.
+
+- Run `docker build -t anaglyph-gan -f docker/unet.Dockerfile .` to build the docker image
+- Run `docker run --rm -it --runtime=nvidia --gpus '"device=0"' -p 9001:8888 -v <data-dir of the hostmachine>:/data/ --name anaglyph-gan-container anaglyph-gan` to run the docker container with exposed port 9001, mapped data directory of the host machine and attached GPU support
 
 ## Training
 ### In Jupyter Notebook

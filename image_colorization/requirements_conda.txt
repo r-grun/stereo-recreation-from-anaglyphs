@@ -7,3 +7,4 @@ ipywidgets
 opencv
 scikit-learn
 scikit-image
+jupyter
