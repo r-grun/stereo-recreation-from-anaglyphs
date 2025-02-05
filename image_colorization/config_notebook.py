@@ -31,6 +31,7 @@ OPTIMIZE_LOSS = 'ssim' # loss to optimize for ['mse', 'mae', 'ssim', 'psnr']
 # Storage
 NUM_STORE_EVERY = 20  # number of epochs to store the model
 MODEL_PATH = "./models/"  # path to save temporary models
+STORE_CONFIG_NAME = "config.txt"  # name of the file to store the configuration for a test run
 
 ##########################################################################
 

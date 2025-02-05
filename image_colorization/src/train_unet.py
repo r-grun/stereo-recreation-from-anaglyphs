@@ -9,15 +9,33 @@ import torchvision.transforms as transforms
 from src.image_loss import ImageLoss
 
 def set_global_config(config_module):
+    """ Set the global configuration."""
     global c
     c = config_module
 
+def display_current_config_parameters(store=False, file_path=None):
+    """ Display the current configuration parameters and store them in a file if store is True."""
+    config_parameters = []
+    for attribute in dir(c):
+        if not attribute.startswith("__"):
+            param = f"{attribute}: {getattr(c, attribute)}"
+            print(param)
+            config_parameters.append(param)
+
+    if store:
+        with open(file_path, 'w') as file:
+            for param in config_parameters:
+                file.write(param + '\n')
+        print(f"Configuration parameters stored in {file_path}")
+
 def denormalize(tensor, mean, std):
+    """ Denormalize a tensor with the given mean and standard deviation."""
     for t, m, s in zip(tensor, mean, std):
         t.mul_(s).add_(m)
     return tensor
 
 def display_validation_images(img_anaglyph, img_reversed, generated_reversed):
+    """ Display the anaglyph, original reversed and generated reversed images."""
     to_pil = transforms.ToPILImage()
 
     fig, axes = plt.subplots(1, 3, figsize=(20, 5))
@@ -36,6 +54,7 @@ def display_validation_images(img_anaglyph, img_reversed, generated_reversed):
     plt.show()
 
 def store_validation_images(model, validation_dl, device, epoch, timestamp):
+    """ Store the anaglyph, original reversed and generated reversed images."""
     model.eval()
 
     with torch.no_grad():
@@ -59,6 +78,7 @@ def store_validation_images(model, validation_dl, device, epoch, timestamp):
     model.train()
 
 def calculate_losses(model, validation_dl, device, loss_fns):
+    """ Calculate the losses for the validation dataset."""
     model.eval()
     val_losses = {loss_name: 0 for loss_name in loss_fns}
 
@@ -77,6 +97,7 @@ def calculate_losses(model, validation_dl, device, loss_fns):
     return avg_val_losses
 
 def train_unet(model, train_dl, val_dl, device, timestamp):
+    """ Train the UNet model."""
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=c.ADAM_LR)
     loss_fns = {
@@ -131,6 +152,3 @@ def train_unet(model, train_dl, val_dl, device, timestamp):
             checkpoint_path = os.path.join(c.MODEL_PATH, f"unet_checkpoint_{timestamp}_epoch{epoch+1}.pth")
             torch.save(model.state_dict(), checkpoint_path)
             print(f"Checkpoint saved at {checkpoint_path}")
-
-if __name__ == "__main__":
-    print("This script is not meant to be run directly. Please run main.py instead")
