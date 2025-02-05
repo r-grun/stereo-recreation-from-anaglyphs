@@ -3,8 +3,8 @@ FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04
 # Update package lists
 RUN apt-get update
 
-# Install nano editor
-RUN apt-get install -y nano
+# Install build dependencies
+RUN apt-get install -y nano wget
 
 # Install miniconda
 RUN mkdir -p ~/miniconda3
