@@ -1,8 +1,10 @@
-#FROM continuumio/miniconda3:23.5.2-0-alpine
 FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04
 
+# Update package lists
+RUN apt-get update
+
 # Install nano editor
-RUN apk add nano
+RUN apt-get install -y nano
 
 # Install miniconda
 RUN mkdir -p ~/miniconda3
@@ -11,9 +13,6 @@ RUN bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
 RUN rm ~/miniconda3/miniconda.sh
 RUN source ~/miniconda3/bin/activate
 RUN conda init --all
-
-# Install opencv
-RUN apk add py3-opencv
 
 # Copy requirements files
 COPY image_colorization/requirements_conda.txt init/requirements_conda.txt
@@ -27,6 +26,9 @@ RUN conda install -c fastai fastai --yes
 
 # Install conda requirements from requirements_conda.txt
 RUN conda install --yes --file init/requirements_conda.txt
+
+# Install opencv
+RUN pip install -y opencv-python
 
 # Install pip requirements from `requirements_pip.txt`
 RUN pip install -r init/requirements_pip.txt
