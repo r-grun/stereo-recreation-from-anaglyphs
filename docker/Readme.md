@@ -3,6 +3,9 @@
 > This directory contains the Dockerfile to build and run the training in a Docker container.
 > Currently, only training the U-Net model is supported.
 
+Run all steps from the root directory of the project
+`/stereo-recreation-from-anaglyphs`.
+
 ## Build the Docker image
 
 To build the Docker image, run the following command from the root directory of the project `/stereo-recreation-from-anaglyphs`:

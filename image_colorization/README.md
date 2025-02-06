@@ -42,12 +42,7 @@ model, replace `unet` with `gan` in the commands._
 Running the scripts is optional, but a dockerfile is provided. Run all steps from the root directory of the project
 `/stereo-recreation-from-anaglyphs`.
 
-- Run `docker build -t anaglyph-gan -f docker/unet.Dockerfile .` to build the docker image
-- Run
-  `docker run --rm -it --runtime=nvidia --gpus '"device=0"' -p 6006:6006 -v <data-dir of the hostmachine>:/data/ --name anaglyph-gan-container --shm-size=2gb anaglyph-gan`
-  to run the docker container with exposed port 9001, mapped data directory of the host machine and attached GPU support
-- Start a jupyter notebook in the container to run the scripts in the browser or run the scripts directly in the
-  terminal
+For detailed instructions, see the [Docker Readme](../docker/README.md).
 
 ## Training
 
@@ -121,7 +116,9 @@ This command will process the input anaglyph image using the specified U-Net mod
 and create a stereo pair image with the specified dimensions.
 
 To run the infer_unet.py script, use the following command:<br>
-```python image_colorization/src/infer_model.py --model_path <model_path> --image_path <image_path> --output_path <output_path> --stereo_output_path <stereo_output_path> [--img_height <img_height>] [--img_width <img_width>] [--output_height <output_height>] [--output_width <output_width>]```
+```bash
+python image_colorization/src/infer_model.py --model_path <model_path> --image_path <image_path> --output_path <output_path> --stereo_output_path <stereo_output_path> [--img_height <img_height>] [--img_width <img_width>] [--output_height <output_height>] [--output_width <output_width>]
+```
 
 Arguments:<br>
 
@@ -138,7 +135,9 @@ Arguments:<br>
   `2 * output_width`. Default is 256.
 
 Example:<br>
-```python image_colorization/src/infer_model.py --model_path path/to/unet_checkpoint.pth --image_path path/to/anaglyph_image.png --output_path path/to/output_image.png --stereo_output_path path/to/stereo_pair.png --model_input_height 256 --model_input_width 256 --output_height 256 --output_width 256```
+```bash
+  python image_colorization/src/infer_model.py --model_path path/to/unet_checkpoint.pth --image_path path/to/anaglyph_image.png --output_path path/to/output_image.png --stereo_output_path path/to/stereo_pair.png --model_input_height 256 --model_input_width 256 --output_height 256 --output_width 256
+```
 
 ```
                                       _.....__
