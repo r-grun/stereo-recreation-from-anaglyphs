@@ -4,44 +4,18 @@ FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
 RUN apt-get update
 
 # Install build dependencies
-RUN apt-get install -y nano wget python3.10 python3-pip python3-dev python3-venv build-essential
+RUN apt-get install -y nano python3.10 python3-pip python3-dev python3-venv build-essential
 RUN alias python=python3
-
-# Download miniconda
-# RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-
-# Install miniconda
-#ENV PATH="/root/miniconda3/bin:$PATH"
-#RUN mkdir /root/.conda && bash Miniconda3-latest-Linux-x86_64.sh -b
-
-# create conda environment
-#RUN conda init bash \
-#    && . ~/.bashrc \
-#    && conda create --name anaglyph-unet python=3.12 \
-#    && conda activate anaglyph-unet \
-#    && pip install ipython
 
 # Copy requirements files
 COPY image_colorization/requirements_conda.txt init/requirements_conda.txt
 COPY image_colorization/requirements_pip.txt init/requirements_pip.txt
 
 # Install pytorch
-# RUN conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia --yes
 RUN pip install torch torchvision torchaudio
 
-# Install fastai
-# RUN conda install -c fastai fastai --yes
-# RUN pip install fastai==1.0.61
-
 # Install conda requirements from requirements_conda.txt
-# RUN conda install --yes --file init/requirements_conda.txt
-RUN pip install -r init/requirements_conda.txt
-
-# Install opencv
-RUN pip install opencv-python
-
-# Install pip requirements from `requirements_pip.txt`
-RUN pip install -r init/requirements_pip.txt
+RUN pip install -r init/requirements_conda.txt && pip install -r init/requirements_pip.txt
 
 # Copy directories /data_creation and /image_colorization to the workdir
 COPY data_creation /app/data_creation
