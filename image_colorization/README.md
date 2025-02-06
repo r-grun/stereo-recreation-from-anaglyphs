@@ -23,10 +23,13 @@ _Note: the following commands are displayed for U-Net model as it is the current
 Running the scripts is optional, but a dockerfile is provided. Run all steps from the root directory of the project `/stereo-recreation-from-anaglyphs`.
 
 - Run `docker build -t anaglyph-gan -f docker/unet.Dockerfile .` to build the docker image
-- Run `docker run --rm -it --runtime=nvidia --gpus '"device=0"' -p 9001:8888 -v <data-dir of the hostmachine>:/data/ --name anaglyph-gan-container --shm-size=2gb anaglyph-gan` to run the docker container with exposed port 9001, mapped data directory of the host machine and attached GPU support
+- Run `docker run --rm -it --runtime=nvidia --gpus '"device=0"' -p 6006:6006 -v <data-dir of the hostmachine>:/data/ --name anaglyph-gan-container --shm-size=2gb anaglyph-gan` to run the docker container with exposed port 9001, mapped data directory of the host machine and attached GPU support
 - Start a jupyter notebook in the container to run the scripts in the browser or run the scripts directly in the terminal
 
 ## Training
+During training, the progress and loss values will be displayed in the console as well as in tensorboard.
+Open tensorboard with `tensorboard --logdir=logs` (When run from the `image_colorization/` directory) and navigate to `http://localhost:6006/` in your browser.
+
 ### In Jupyter Notebook
 - Open `recreate_anaglyphs_unet.ipynb` for U-Net training in Jupyter Notebook
 

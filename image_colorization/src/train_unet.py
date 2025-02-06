@@ -1,13 +1,12 @@
 import os
 import torch
 import matplotlib.pyplot as plt
-# from tqdm.notebook import tqdm
-# from tqdm import tqdm
 from torch.optim import Adam
 from torchvision.utils import save_image
 import csv
 import torchvision.transforms as transforms
 from src.image_loss import ImageLoss
+from torch.utils.tensorboard import SummaryWriter
 
 def set_global_config(config_module):
     """ Set the global configuration."""
@@ -97,8 +96,13 @@ def calculate_losses(model, validation_dl, device, loss_fns):
     model.train()
     return avg_val_losses
 
-def train_unet(model, train_dl, val_dl, device, timestamp, tqdm):
+def train_unet(model, train_dl, val_dl, device, timestamp, tqdm, writer=None):
     """ Train the UNet model."""
+
+    writer_passed = True if writer is not None else False
+    if not writer_passed:
+        writer = SummaryWriter(log_dir=os.path.join(c.LOGS_PATH, f"{timestamp}"))
+
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=c.ADAM_LR)
     loss_fns = {
@@ -148,8 +152,15 @@ def train_unet(model, train_dl, val_dl, device, timestamp, tqdm):
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow([epoch + 1] + [avg_train_losses[loss_name] for loss_name in loss_fns] + [avg_val_losses[loss_name] for loss_name in loss_fns])
 
+        for loss_name in loss_names:
+            writer.add_scalar(f"Loss/Train/{loss_name}", avg_train_losses[loss_name], epoch + 1)
+            writer.add_scalar(f"Loss/Validation/{loss_name}", avg_val_losses[loss_name], epoch + 1)
+
         if ((epoch + 1) % c.NUM_STORE_EVERY == 0) or ((epoch + 1) == c.EPOCHS):
             if c.STORE_VALIDATION_IMGS or c.DISPLAY_VALIDATION_IMGS: store_validation_images(model=model, validation_dl=val_dl, device=device, epoch=epoch, timestamp=timestamp)
             checkpoint_path = os.path.join(c.MODEL_PATH, f"unet_checkpoint_{timestamp}_epoch{epoch+1}.pth")
             torch.save(model.state_dict(), checkpoint_path)
             print(f"Checkpoint saved at {checkpoint_path}")
+
+    if not writer_passed:
+        writer.close()

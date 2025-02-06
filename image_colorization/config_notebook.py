@@ -32,11 +32,12 @@ OPTIMIZE_LOSS = 'ssim' # loss to optimize for ['mse', 'mae', 'ssim', 'psnr']
 NUM_STORE_EVERY = 20  # number of epochs to store the model
 MODEL_PATH = "./models/"  # path to save temporary models
 STORE_CONFIG_NAME = "config.txt"  # name of the file to store the configuration for a test run
+LOGS_PATH = "logs/"  # path to save the logs for tensorboard
 
 ##########################################################################
 
 # Validation
 NUM_VALIDATION_IMG = 3  # number of vlaidation batches to store all its images
-RESULTS_PATH = "./results/"  # path to save the results
+RESULTS_PATH = "results/"  # path to save the results
 STORE_VALIDATION_IMGS = True  # if validation images should be stored
 DISPLAY_VALIDATION_IMGS = False  # if validation images should be displayed

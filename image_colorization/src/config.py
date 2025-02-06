@@ -34,6 +34,7 @@ DATALOADER_N_WORKERS = 4 # how many subprocesses to use for data loading
 NUM_STORE_EVERY = 10  # number of epochs to store the model
 MODEL_PATH = "../models/"  # path to save temporary models
 STORE_CONFIG_NAME = "config.txt"  # name of the file to store the configuration for a test run
+LOGS_PATH = "../logs/"  # path to save the logs for tensorboard
 
 ##########################################################################
 
