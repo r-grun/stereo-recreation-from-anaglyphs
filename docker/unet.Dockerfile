@@ -29,4 +29,4 @@ RUN . ~/.bashrc
 WORKDIR /app
 RUN alias python=python3
 
-EXPOSE 6006
+EXPOSE 6006 8888

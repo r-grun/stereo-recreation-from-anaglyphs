@@ -4,8 +4,8 @@ from tqdm import tqdm
 import csv
 from sklearn.model_selection import train_test_split
 
-SOURCE_DIR = '/data/raw'
-TARGET_DIR = '/data/'
+SOURCE_DIR = '/data/raw' # Path to the directory containing the raw images
+TARGET_DIR = '/data/' # Path to the directory where the processed images will be saved in subdirectories
 CHUNK_WIDTH = 256
 CHUNK_HEIGHT = 256
 CSV_FILE = os.path.join(TARGET_DIR, 'image_locations.csv')

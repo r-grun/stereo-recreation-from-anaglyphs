@@ -40,3 +40,15 @@ The U-Net architecture is a convolutional neural network that is mainly used for
 By transforming the image segmentation task into a pixel-wise classification task, the U-Net architecture can be used to generate inverse ana-glyphs from 3D-Anaglyphs, which can be used to recreate the final stereo images.
 
 ![U-Net Architecture](./docs/img/unet_architecture_anaglyph.jpg)
+
+# Structure of this repository
+- [data_creation/](data_creation/Readme.md): Contains scripts to create the dataset and prepare the data for training the models.
+- [docker/](docker/Readme.md): Contains the Dockerfile build and run the training in a Docker container.
+- [docs/](docs/Readme.md): Contains images and other files used in the README.md file, as well as a scientific one-pager of the project.
+- [image_colorization/](image_colorization/README.md): Contains the code for the U-Net and GAN architecture.
+
+# Data Sources
+The trained models have been trained using the **[Holopix50k](https://leiainc.github.io/holopix50k/)** dataset:<br>
+Y. Hua et al., “Holopix50k: A Large-Scale In-the-wild Stereo Image
+Dataset”  in _CVPR Workshop on Computer Vision for Augmented and Virtual Reality_, Seattle, WA, 2020. Available: [http://arxiv.org/pdf/2003.11172]()
+
