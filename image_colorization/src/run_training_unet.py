@@ -21,6 +21,11 @@ def main(test_run=True):
     # Initialize models
     unet = UNet()
 
+    # Use DataParallel for multiple GPUs
+    if torch.cuda.device_count() > 1:
+        print(f"Using {torch.cuda.device_count()} GPUs")
+        unet = torch.nn.DataParallel(unet)
+
     # Choose config based on is_test_run
     if test_run:
         current_config = config_test_run
