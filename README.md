@@ -1,8 +1,8 @@
-# Recreation of stereo images from 3D-Anaglyphs using Deep Learning
+# ReStereo: Recreation of stereo Images from 3D-Anaglyphs using Deep Learning
 
-This repository follows the idea to recreate stereo images from 3D-Anaglyphs using Deep Learning. The main goal is to create a model that can re-generate stereo images from 3D-Anaglyphs.
+This repository follows contains code to solve the problem of recreating stereo images from 3D-Anaglyphs using Deep Learning. The goal is to create a model that can re-generate stereo images from 3D-Anaglyphs.
 
-> The presented system is called ReStereo. It is able to recreate stereo images from 3D-Anaglyphs using Deep Learning.
+> The presented system is called ReStereo. It is able to recreate stereo images from an input 3D-anaglyph image.
 ``` 
                                       _.....__
                              (.--...._`'--._
@@ -25,7 +25,7 @@ This repository follows the idea to recreate stereo images from 3D-Anaglyphs usi
         --- Recreate Stereo Images from its Anaglyph! ---
 ```
 
-The following approaches have been be implemented:
+The following approaches have been investigated further:
 
 ## GAN (Generative Adversarial Network) Architecture
 
