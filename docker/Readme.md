@@ -36,10 +36,13 @@ Once the container is running, start the jupyter notebook inside the container u
 
 ## Tensorboard
 
-During training, the progress and loss values will be displayed in the console as well as in Tensorboard. Open Tensorboard with the following command from the `image_colorization/` directory:
+During training, the progress and loss values will be displayed in the console as well as in Tensorboard.
+Open Tensorboard with the following command from the `image_colorization/` directory.
+`--logdir=logs` specifies the directory where the logs are stored.
+`--host=0.0.0.0` specifies the host to listen on (use `0.0.0.0` when running in docker container).
 
 ```bash
-tensorboard --logdir=logs
+tensorboard --logdir=logs --host=0.0.0.0
 ```
 
 Once the TensorBoard server has started, navigate to [http://localhost:6006/](http://localhost:6006/) in your browser.
