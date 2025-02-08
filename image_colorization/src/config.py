@@ -23,7 +23,7 @@ IMAGE_SIZE=256 # size of the image (width = height)
 #########################################################################
 
 # TRAINING PARAMETERS
-EPOCHS = 30 # number of training epochs
+EPOCHS = 100 # number of training epochs
 ADAM_LR = 1e-4 # Adam optimizer learning rate
 ADAM_BETA1 = 0.5 # Adam optimizer beta1
 OPTIMIZE_LOSS = 'ssim' # loss to optimize for ['mse', 'mae', 'ssim', 'psnr']
