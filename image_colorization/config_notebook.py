@@ -12,10 +12,10 @@ VALIDATION_LEFT_FILE = "../../data/validation_left.txt"  # path to the file cont
 VALIDATION_RIGHT_FILE = "../../data/validation_right.txt"  # path to the file containing the paths to the right images (of stereo pairs)
 
 # paths for testing
-TEST_ANAGLYPH_FILE = "../../data/test_anaglyphs.txt"  # path to the file containing the paths to the anaglyph images
-TEST_REVERSED_FILE = "../../data/test_reversed.txt" # path to the file containing the paths to the reversed anaglyph images
-TEST_LEFT_FILE = "../../data/test_left.txt"  # path to the file containing the paths to the left images (of stereo pairs)
-TEST_RIGHT_FILE = "../../data/test_right.txt"  # path to the file containing the paths to the right images (of stereo pairs)
+TEST_ANAGLYPH_FILE = "../../../data/test_anaglyphs.txt"  # path to the file containing the paths to the anaglyph images
+TEST_REVERSED_FILE = "../../../data/test_reversed.txt" # path to the file containing the paths to the reversed anaglyph images
+TEST_LEFT_FILE = "../../../data/test_left.txt"  # path to the file containing the paths to the left images (of stereo pairs)
+TEST_RIGHT_FILE = "../../../data/test_right.txt"  # path to the file containing the paths to the right images (of stereo pairs)
 
 # image size
 IMAGE_SIZE=512 # size of the image (width = height)
@@ -38,6 +38,6 @@ LOGS_PATH = "logs/"  # path to save the logs for tensorboard
 
 # Validation
 NUM_VALIDATION_IMG = 3  # number of vlaidation batches to store all its images
-RESULTS_PATH = "results/"  # path to save the results
+RESULTS_PATH = "../results/"  # path to save the results
 STORE_VALIDATION_IMGS = True  # if validation images should be stored
 DISPLAY_VALIDATION_IMGS = False  # if validation images should be displayed
