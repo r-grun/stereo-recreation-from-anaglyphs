@@ -7,3 +7,4 @@ ipywidgets
 scikit-learn
 scikit-image
 jupyter
+pandas

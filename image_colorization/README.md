@@ -8,8 +8,8 @@ Make sure to run the installation steps from the `image_colorization/` directory
 
 ## Windows
 
-- Create a python environment with anaconda and name `anaconda-gan` <br>
-  `conda create --name anaglyph-gan python=3.11`
+- Create a python environment with anaconda and name `anaconda-recreation` <br>
+  `conda create --name anaglyph-recreation python=3.11`
 - Install torch, torchaudio, torchvision, cuda support https://pytorch.org/get-started/locally/ <br>
   `conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia --yes`
 - Install conda requirements from `requirements_conda.txt` <br>
@@ -17,7 +17,7 @@ Make sure to run the installation steps from the `image_colorization/` directory
 - Install pip requirements from `requirements_pip.txt` <br>
   `pip install -r requirements_pip.txt`
 - Add python kernel to notebook <br>
-  `python -m ipykernel install --name=anaglyph-gan`
+  `python -m ipykernel install --name anaglyph-recreation --user`<br>
 - Add the image_colorization directory to the python path <br>
   `setx PYTHONPATH %PYTHONPATH%;<full path to this directory>`
 
@@ -27,6 +27,8 @@ Make sure to run the installation steps from the `image_colorization/` directory
   `pip install torch torchvision torchaudio`
 - Install requirements from `requirements_conda.txt` and `requirements_pip.txt` <br>
   `pip install -r requirements_conda.txt && pip install -r requirements_pip.txt`
+- Add python kernel to notebook <br>
+  `python -m ipykernel install --name anaglyph-recreation --user`<br>
 - Add the image_colorization directory to the python path <br>
   `echo "export PYTHONPATH=$PYTHONPATH:($pwd)" >> ~/.bashrc`
 
