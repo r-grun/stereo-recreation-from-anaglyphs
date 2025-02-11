@@ -43,7 +43,7 @@ def main(model_path=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run UNet testing")
-    parser.add_argument('--model_path', type='str', help="Path to the model to test")
+    parser.add_argument('--model_path', type=str, required=True, help="Path to the model to test")
     args = parser.parse_args()
-    main(model_path=args.test_run)
+    main(model_path=args.model_path)
     print("Testing completed.")
