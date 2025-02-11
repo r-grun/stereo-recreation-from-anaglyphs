@@ -1,7 +1,7 @@
 import torch
 from torchvision import transforms
 from PIL import Image
-from src.unet import UNet
+from unet import UNet
 import argparse
 
 def load_model(model_path, device):
