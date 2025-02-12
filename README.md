@@ -21,7 +21,8 @@ This repository follows contains code to solve the problem of recreating stereo 
              / _, _/  _/ /    / /___   / /_/ /  
             /_/ |_|  /___/   /_____/   \____/   
                                     
- /// Reconstructing stereo Images Enabled through U-Nets ///
+  /// Reconstruction of Stereo Images from Anaglyphs  ///
+ ///              Enabled Through U-Nets             ///
 ```
 
 The following approaches have been investigated further:

@@ -159,7 +159,8 @@ Example:<br>
              / _, _/  _/ /    / /___   / /_/ /  
             /_/ |_|  /___/   /_____/   \____/   
                                     
-  /// Reconstructing stereo Images Enabled through U-Nets ///
+  /// Reconstruction of Stereo Images from Anaglyphs  ///
+ ///              Enabled Through U-Nets             ///
 
 Reversed anaglyph saved at [...]
 Stereo pair saved at [...]

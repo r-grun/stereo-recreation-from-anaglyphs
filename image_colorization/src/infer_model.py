@@ -59,7 +59,8 @@ def display_3d_goggles():
              / _, _/  _/ /    / /___   / /_/ /  
             /_/ |_|  /___/   /_____/   \____/   
                                     
-    /// Reconstructing stereo Images Enabled through U-Nets ///
+      /// Reconstruction of Stereo Images from Anaglyphs  ///
+     ///              Enabled Through U-Nets             ///
     """
 
     print(output)
