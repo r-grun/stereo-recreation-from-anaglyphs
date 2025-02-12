@@ -19,7 +19,7 @@ docker build -t anaglyph-recreation -f docker/unet.Dockerfile .
 To run the Docker container with exposed port 6006, mapped data directory of the host machine, and attached GPU support, run the following command:
 
 ```bash
-docker run --rm -it --runtime=nvidia --gpus '"device=0"' -p 6006:6006 -v <data-dir of the hostmachine>:/data/ --name anaglyph-recreation-container --shm-size=3gb anaglyph-recreation
+docker run -it --runtime=nvidia --gpus '"device=0"' -p 6006:6006 -v <data-dir of the hostmachine>:/data/ --name anaglyph-recreation-container --shm-size=3gb anaglyph-recreation
 ```
 
 ## Start a Jupyter notebook in the container

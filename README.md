@@ -2,7 +2,7 @@
 
 This repository follows contains code to solve the problem of recreating stereo images from 3D-Anaglyphs using Deep Learning. The goal is to create a model that can re-generate stereo images from 3D-Anaglyphs.
 
-> The presented system is called ReStereo. It is able to recreate stereo images from an input 3D-anaglyph image.
+> The presented system is called RIEU (**R**econstructing Stereo **I**mages **E**nabled Through **U**-Nets). It is able to recreate stereo images from an input 3D-anaglyph image.
 ``` 
                                       _.....__
                              (.--...._`'--._
@@ -15,14 +15,13 @@ This repository follows contains code to solve the problem of recreating stereo 
           `. `.__________/,'     `.' .......-' ,'
             `............-'        "---------''
 
-            ______     _____ _
-            | ___ \   /  ___| |
-            | |_/ /___\ `--.| |_ ___ _ __ ___  ___
-            |    // _ \`--. \ __/ _ \ '__/ _ \/ _ \
-            | |\ \  __/\__/ / ||  __/ | |  __/ (_) |
-            \_| \_\___\____/ \__\___|_|  \___|\___/
-
-        --- Recreate Stereo Images from its Anaglyph! ---
+                ____     ____    ______   __  __
+               / __ \   /  _/   / ____/  / / / /
+              / /_/ /   / /    / __/    / / / / 
+             / _, _/  _/ /    / /___   / /_/ /  
+            /_/ |_|  /___/   /_____/   \____/   
+                                    
+ /// Reconstructing stereo Images Enabled through U-Nets ///
 ```
 
 The following approaches have been investigated further:
