@@ -29,7 +29,7 @@ To run the scripts in the browser, start a Jupyter notebook in the container. Al
 When using the Jupyter notebook, make sure to run the container with the exposed port `8888`:
 
 ```bash
-docker run --rm -it --runtime=nvidia --gpus '"device=0"' -p 6006:6006 -p 8888:8888 -v <data-dir of the hostmachine>:/data/ --name anaglyph-recreation-container --shm-size=3gb anaglyph-recreation
+docker run -it --runtime=nvidia --gpus '"device=0"' -p 6006:6006 -p 8888:8888 -v <data-dir of the hostmachine>:/data/ --name anaglyph-recreation-container --shm-size=3gb anaglyph-recreation
 ```
 
 Once the container is running, start the jupyter notebook inside the container using `docker exec ...`, then open a browser and navigate to [http://localhost:8888/](http://localhost:8888/) to access the Jupyter notebook.
