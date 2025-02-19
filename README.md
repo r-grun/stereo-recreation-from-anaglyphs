@@ -1,4 +1,4 @@
-# ReStereo: Recreation of stereo Images from 3D-Anaglyphs using Deep Learning
+# RIEU: Reconstruction of Stereo Images from Anaglyphs Enabled Through U-Nets
 
 This repository follows contains code to solve the problem of recreating stereo images from 3D-Anaglyphs using Deep Learning. The goal is to create a model that can re-generate stereo images from 3D-Anaglyphs.
 
